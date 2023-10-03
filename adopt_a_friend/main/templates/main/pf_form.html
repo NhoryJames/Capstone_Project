@@ -1,0 +1,153 @@
+{% load static tailwind_tags %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}       {% endblock %} | Adopt A Friend</title>
+    {% tailwind_css %}
+    <link rel="stylesheet" type="text/css" href="pf_form.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Imprima&display=swap'); 
+        @import url('https://fonts.googleapis.com/css2?family=Imprima&family=Nerko+One&display=swap');
+        
+        .text-shadows{
+            text-shadow: -1px 1px 0 #000, 1px 1px 0 #000, 1px -1px 0 #000, -1px -1px 0 #000;
+        }
+    </style>
+
+</head>
+<body style="background-color: #d99f29;">
+    {% block image %} {% endblock %}
+    <div>
+        <nav class="py-6 px-20 flex justify-between items-center bg-transparent" style="font-family: 'Imprima', sans-serif;">
+            <a href="/" class="relative text-xl font-semibold">Adopt A Friend</a>
+            <div class="relative flex space-x-10">
+                <a href="#" class="py-2 text-base font font-semibold hover:text-white">Home</a>
+                <a href="#" class="py-2 text-base font font-semibold hover:text-white">Support Us</a>
+                <a href="#" class="py-2 text-base font font-semibold hover:text-white">Our Animals</a>
+                <a href="#" class="py-2 text-base font font-semibold hover:text-white">About Us</a>
+                <button class="font-semibold text-white px-9 py-2 rounded-md bg-amber-900 hover:bg-yellow-800">
+                    Login
+                </button>
+            </div>
+        </nav>
+    </div>
+
+<h1>Select Preferred Pet</h1>
+        
+         
+        <div class="image-wrapper">
+
+          <div class="media">
+            <div class="overlay"></div>
+            <button class="pet">
+              <img src="https://images.pexels.com/photos/485294/pexels-photo-485294.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="">
+            </button>
+            <div class="image-details">
+              <p>Dog</p>
+            </div>
+          </div>
+
+          <div class="media">
+            <div class="overlay"></div>
+            <button class="pet">
+            <img src="https://images.pexels.com/photos/7981064/pexels-photo-7981064.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="">
+            </button>
+            <div class="image-details">
+              <p>Cat</p>
+            </div>
+          </div>
+
+
+        </div>
+        
+        <div class="app-paper">
+          <h3>Select Preferred Attributes</h3>
+      
+          <aside class="checkbox-list">
+      
+            <label class="check-item">
+              <input type="checkbox" name="pets" />
+              <span>Playful</span>
+            </label>
+      
+            <label class="check-item">
+              <input type="checkbox" name="pets" />
+              <span>Protective</span>
+            </label>
+      
+            <label class="check-item">
+              <input type="checkbox" name="pets" />
+              <span>Puspin</span>
+            </label>
+      
+            <label class="check-item">
+              <input type="checkbox" name="pets" />
+              <span>Friendly</span>
+            </label>
+            
+            <label class="check-item">
+              <input type="checkbox" name="pets" />
+              <span>Aspin</span>
+            </label>
+      
+            <label class="check-item">
+              <input type="checkbox" name="pets" />
+              <span>Affectionate</span>
+            </label>
+      
+            <label class="check-item">
+              <input type="checkbox" name="pets" />
+              <span>Spayed</span>
+            </label>
+      
+            <label class="check-item">
+              <input type="checkbox" name="pets" />
+              <span>Medium Size</span>
+            </label>
+
+            <label class="check-item">
+              <input type="checkbox" name="pets" />
+              <span>Neutere</span>
+            </label>
+            
+            <label class="check-item">
+              <input type="checkbox" name="pets" />
+              <span>Energetic</span>
+            </label>
+      
+            <label class="check-item">
+              <input type="checkbox" name="pets" />
+              <span>Neutered</span>
+            </label>
+
+            <label class="check-item">
+              <input type="checkbox" name="pets" />
+              <span>Neutered</span>
+            </label>
+
+            <label class="check-item">
+              <input type="checkbox" name="pets" />
+              <span>Neutered</span>
+            </label>
+            
+      
+      
+          </aside>
+  
+      
+          <a href="#" class="btn">Submit</a>
+    
+      
+        </div>
+
+
+
+
+</body>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.1/flowbite.min.js"></script>
+
+</html>

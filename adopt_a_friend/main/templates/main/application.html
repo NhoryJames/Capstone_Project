@@ -1,0 +1,157 @@
+{% extends 'main/base1.html' %}
+{% load static %}
+
+{% block title %} Application {% endblock %}
+
+{% block content %}
+
+<h1 class="text-center pt-12 text-6xl text-shadows text-amber-800" style="font-family: 'Nerko One';"> Adoption Application </h1>
+<div class="mb-2 pt-4 px-10 mt-5 mx-40" style="font-family: 'Imprima', sans-serif;">
+    <ol class="flex items-center w-full text-sm font-medium text-center text-gray-500 dark:text-gray-400 sm:text-base mb-8">
+        <li class="font-semibold text-xl flex md:w-full items-center text-blue-600 dark:text-blue-500 sm:after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-200 after:border-1 after:hidden sm:after:inline-block after:mx-6 xl:after:mx-10 dark:after:border-gray-700">
+            <span class="flex items-center after:content-['/'] sm:after:hidden after:mx-2 after:text-gray-200 dark:after:text-gray-500">
+                <span class="flex items-center justify-center w-8 h-8 border border-blue-600 rounded-full shrink-0 dark:border-blue-600 mr-4">
+                    1
+                </span>
+                Personal <span class="hidden sm:inline-flex sm:ml-2">Info</span>
+            </span>
+        </li>
+        <li class="text-xl flex md:w-full items-center after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-200 after:border-1 after:hidden sm:after:inline-block after:mx-6 xl:after:mx-10 dark:after:border-gray-700">
+            <span class="flex items-center after:content-['/'] sm:after:hidden after:mx-2 after:text-gray-200 dark:after:text-gray-500">
+                <span class="flex items-center justify-center w-8 h-8 border border-gray-500 rounded-full shrink-0 dark:border-gray-400 mr-4">
+                    2
+                </span>
+                Answer <span class="hidden sm:inline-flex sm:ml-2">Questionnaire</span>
+            </span>
+        </li>
+        
+        <li class="text-xl flex items-center">
+            <span class="flex items-center justify-center w-8 h-8 border border-gray-500 rounded-full shrink-0 dark:border-gray-400 mr-4">
+                3
+            </span>
+            Confirmation
+        </li>
+    </ol>
+</div>
+
+<div class="bg-white border-2 shadow-inner border-black rounded-3xl mb-16 pt-12 pb-3 px-20 mt-12 mx-40" style="font-family: 'Imprima', sans-serif;">
+    <h1 class="pb-2 text-3xl font-semibold"> Personal Information </h1>
+    <p class="pb-4"> Enter the following </p>
+    <p class="border-b-2 mb-6"></p>
+
+    <div class="grid grid-cols-2 gap-6">
+        <div>
+            <label for="inputField1" class="block mb-2">First Name</label>
+            <input type="text" id="inputField1" class="block w-full rounded-md">
+        </div>
+        <div>
+            <label for="inputField2" class="block mb-2">Last Name</label>
+            <input type="text" id="inputField2" class="block w-full rounded-md">
+        </div>
+    </div>
+    <div>
+        <label for="inputField1" class="block mb-2 pt-3">Address</label>
+        <input type="text" id="inputField1" class="block w-full rounded-md">
+    </div>
+
+    <div class="grid grid-cols-2 gap-6 pt-4">
+        <div>
+            <label for="inputField1" class="block mb-2">Contact Number</label>
+            <input type="text" id="inputField1" class="block w-full rounded-md">
+        </div>
+        <div>
+            <label for="inputField2" class="block mb-2">Email</label>
+            <input type="text" id="inputField2" class="block w-full rounded-md">
+        </div>
+    </div>
+
+    <div class="grid grid-cols-2 gap-6 pt-4">
+        <div class="space-y-4">
+            <label for="inputField1" class="block mb-2">Contact Number</label>
+            <input type="text" id="inputField1" class="block w-full rounded-md">
+        </div>
+        <div class="space-y-4">
+            <label class="block mb-2">Status</label>
+            <label class="inline-flex items-center">
+                <input type="radio" class="form-radio text-indigo-600" name="radioOptions" value="option1">
+                <span class="ml-2 mr-2">Single</span>
+            </label>
+            
+            <label class="inline-flex items-center">
+                <input type="radio" class="ml-5 form-radio text-indigo-600" name="radioOptions" value="option2">
+                <span class="ml-2 mr-2">Married</span>
+            </label>
+            
+            <label class="inline-flex items-center">
+                <input type="radio" class="ml-5 form-radio text-indigo-600" name="radioOptions" value="option3">
+                <span class="ml-2">Separated</span>
+            </label>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-2 gap-6 pt-4">
+        <div>
+            <label for="inputField1" class="block mb-2">Occupation</label>
+            <input type="text" id="inputField1" class="block w-full rounded-md">
+        </div>
+        <div>
+            <label for="inputField2" class="block mb-2">Facebook Account Link</label>
+            <input type="text" id="inputField2" class="block w-full rounded-md">
+        </div>
+    </div>
+
+    <div class="grid grid-cols-2 gap-6 pt-4">
+        <div class="grid-rows-2 space-y-4">
+            <label class="block">What prompted you to adopt from PAWS</label>
+            <div class="grid grid-cols-2">
+                <div>
+                    <label class="inline-flex items-center">
+                        <input type="checkbox" class="form-checkbox text-indigo-600" name="radioOptions" value="option1">
+                        <span class="ml-2">Friends</span>
+                    </label>
+                </div>
+                <div>
+                    <label class="inline-flex items-center">
+                        <input type="checkbox" class="ml-4 form-checkbox text-indigo-600" name="radioOptions" value="option2">
+                        <span class="ml-2 mr-3">Website</span>
+                    </label>
+                </div>
+            </div>
+            <div class="grid grid-cols-2">
+                <div>
+                    <label class="inline-flex items-center">
+                        <input type="checkbox" class="form-checkbox text-indigo-600" name="radioOptions" value="option1">
+                        <span class="ml-2">Social Media</span>
+                    </label>
+                </div>
+                <div>
+                    <label class="inline-flex items-center">
+                        <input type="checkbox" class="ml-4 form-checkbox text-indigo-600" name="radioOptions" value="option2">
+                        <span class="ml-2 mr-3">Others</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="space-y-4">
+            <label class="block mb-2">Have you adopted from PAWS before?</label>
+            <label class="inline-flex items-center">
+                <input type="radio" class="form-radio text-indigo-600" name="radioOptions" value="option1">
+                <span class="ml-2 mr-2">Yes</span>
+            </label>
+            
+            <label class="inline-flex items-center">
+                <input type="radio" class="ml-5 form-radio text-indigo-600" name="radioOptions" value="option3">
+                <span class="ml-2">No</span>
+            </label>
+        </div>
+    </div>
+
+    <div class="py-6 flex justify-end">
+        <button class="py-2 px-10 rounded-md bg-amber-800 text-white">Next</button>
+    </div>
+    
+</div>
+
+
+{% endblock %}

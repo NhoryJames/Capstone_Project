@@ -1,0 +1,49 @@
+{% load static tailwind_tags %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}       {% endblock %} | Adopt A Friend</title>
+    {% tailwind_css %}
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Imprima&display=swap'); 
+        @import url('https://fonts.googleapis.com/css2?family=Imprima&family=Nerko+One&display=swap');
+        
+        .text-shadows{
+            text-shadow: -1px 1px 0 #000, 1px 1px 0 #000, 1px -1px 0 #000, -1px -1px 0 #000;
+        }
+    </style>
+    {% block css %} {% endblock %}
+
+</head>
+<body style="background-color: #E9E9E9;">
+    {% block image %} {% endblock %}
+    <div>
+        <nav class="py-6 px-20 flex justify-between items-center" style="font-family: 'Imprima', sans-serif; background-color: #E19355;">
+            <a href="/" class="relative text-xl font-semibold">Adopt A Friend</a>
+            <div class="relative flex space-x-10">
+                <a href="#" class="py-2 text-base font font-semibold hover:text-white">Home</a>
+                <a href="#" class="py-2 text-base font font-semibold hover:text-white">Support Us</a>
+                <a href="#" class="py-2 text-base font font-semibold hover:text-white">Our Animals</a>
+                <a href="#" class="py-2 text-base font font-semibold hover:text-white">About Us</a>
+                <button class="font-semibold text-white px-9 py-2 rounded-md bg-amber-900 hover:bg-yellow-800">
+                    Login
+                </button>
+            </div>
+        </nav>
+    </div>
+
+    {% block content %}
+
+    {% endblock %}
+
+        
+    
+
+</body>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.1/flowbite.min.js"></script>
+
+</html>
