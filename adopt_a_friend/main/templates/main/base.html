@@ -28,9 +28,20 @@
                 <a href="#" class="py-2 text-base font font-semibold hover:text-white">Support Us</a>
                 <a href="#" class="py-2 text-base font font-semibold hover:text-white">Our Animals</a>
                 <a href="#" class="py-2 text-base font font-semibold hover:text-white">About Us</a>
+                {% if user.is_authenticated %}
+                <a href="{% url 'logout' %}">
                 <button class="font-semibold text-white px-9 py-2 rounded-md bg-amber-900 hover:bg-yellow-800">
-                    Login
+                    Logout
                 </button>
+                </a>
+                {% else %}
+                <a href="{% url 'login' %}">
+                    <button class="font-semibold text-white px-9 py-2 rounded-md bg-amber-900 hover:bg-yellow-800">
+                        Login
+                    </button>
+                </a>
+                {% endif %}
+                
             </div>
         </nav>
     </div>
