@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import UserTbl
+from .models import Users
 from django.contrib.auth.admin import UserAdmin
 from django.forms import TextInput, Textarea 
 
@@ -39,4 +39,4 @@ class UserAdminConfig(UserAdmin):
          )
     )
 
-admin.site.register(UserTbl, UserAdminConfig)
+admin.site.register(Users, UserAdminConfig)
