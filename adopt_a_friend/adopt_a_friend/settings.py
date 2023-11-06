@@ -156,4 +156,20 @@ INTERNAL_IPS = [
 
 NPM_BIN_PATH = r"C:\Program Files\nodejs\npm.cmd"
 
+MAX_RETRIES = 6
 
+
+
+HTML_MESSAGE_TEMPLATE = "users/email.html"
+
+#VERIFICATION_SUCCESS_TEMPLATE = "users/new_email.html"
+
+#VERIFICATION_FAILED_TEMPLATE = "path/to/failed.html"
+
+REQUEST_NEW_EMAIL_TEMPLATE = "users/request_new_email.html"
+
+#LINK_EXPIRED_TEMPLATE = 'path/to/expired.html'
+
+#NEW_EMAIL_SENT_TEMPLATE  = 'users/new_email.html'
+
+LOGIN_URL = "login"

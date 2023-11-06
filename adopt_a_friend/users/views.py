@@ -14,7 +14,7 @@ def create_user(request):
             inactive_user = send_verification_email(request, form)
             user = form.save()
             # Redirect to a success page or do something else
-            return redirect('/login/')
+            return redirect('/sent_email/')
     else:
         form = UsersForm()
 
@@ -38,3 +38,6 @@ def user_logout(request):
 @login_required
 def profile(request):
     return render(request, 'users/profile.html')
+
+def sent_email(request):
+    return render(request, 'users/sent_email.html')
