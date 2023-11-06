@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login as auth_login, logout
 from .forms import UsersForm, LoginForm
 from verify_email.email_handler import send_verification_email
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
@@ -13,7 +14,7 @@ def create_user(request):
             inactive_user = send_verification_email(request, form)
             user = form.save()
             # Redirect to a success page or do something else
-            return redirect('success_page')
+            return redirect('/login/')
     else:
         form = UsersForm()
 
@@ -24,7 +25,7 @@ def user_login(request):
         form = LoginForm(request, request.POST)
         if form.is_valid():
             auth_login(request, form.get_user())
-            return redirect('/home/')
+            return redirect('index')
     else:
         form = LoginForm()
 
@@ -33,4 +34,7 @@ def user_login(request):
 def user_logout(request):
     if request.user.is_authenticated:
         logout(request)
-    return redirect('/home/')  # Replace 'home' with the URL where you want to redirect after logout.
+
+@login_required
+def profile(request):
+    return render(request, 'users/profile.html')

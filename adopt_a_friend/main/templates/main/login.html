@@ -1,16 +1,17 @@
-{% load static tailwind_tags %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
     <title>Login | Adopt A Friend</title>
+    
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Imprima&display=swap'); 
         @import url('https://fonts.googleapis.com/css2?family=Imprima&family=Nerko+One&display=swap');
         
         body {
-            background-image: url('/static/main/image/login.png');
+            background-image: url('/static/image/login.png');
             background-size: cover;
         }
 
@@ -18,7 +19,8 @@
             text-shadow: -1px 1px 0 #000, 1px 1px 0 #000, 1px -1px 0 #000, -1px -1px 0 #000;
         }
     </style>
-    {% tailwind_css %}
+    
+
 </head>
 <body class="flex justify-end">
 
@@ -47,7 +49,7 @@
                 {%endif%}
 
                 <div class="mx-6">
-                    <button class="bg-amber-900 hover:bg-slate-700 text-white text-base rounded-lg py-2.5 px-5 transition-colors w-full text-[19px] mx-6">Log In</button>
+                    <button class="bg-amber-900 hover:bg-slate-700 text-white text-base rounded-lg py-2.5 px-5 transition-colors w-full text-[19px] mx-1.5 my-1">Log In</button>
                 </div>
             </form>
             

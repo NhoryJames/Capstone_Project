@@ -23,6 +23,7 @@ class CustomAccountManager(BaseUserManager):
     def create_superuser(self, email=None, password=None, first_name=None, last_name=None, gender=None, age=None, date_of_birth=None, home_address=None, contact_num=None, **other_fields):
         other_fields.setdefault('is_staff', True)
         other_fields.setdefault('is_superuser', True)
+        other_fields.setdefault('is_active', True)
 
         if other_fields.get('is_staff') is not True:
             raise ValueError('Staff must be assigned to is_staff=True')
@@ -33,12 +34,17 @@ class CustomAccountManager(BaseUserManager):
 
 
 class Users(AbstractBaseUser, PermissionsMixin):
+    GENDER_CHOICES = (
+        ('M', 'Male'),
+        ('F', 'Female'),
+        ('O', 'Other')
+    )
      
     email = models.EmailField(unique=True, blank=False, null=False)
     first_name = models.CharField(max_length=50, blank=False, null=False)
     last_name = models.CharField(max_length=50, blank=False, null=False)
     age = models.IntegerField(blank=False, null=False)
-    gender = models.CharField(max_length=20, blank=False, null=False)
+    gender = models.CharField(max_length=20, blank=False, null=False, choices=GENDER_CHOICES)
     date_of_birth = models.DateField(blank=False, null=False)
     home_address = models.CharField(max_length=200, blank=False, null=False)
     contact_num = models.CharField(max_length=15, blank=False, null=False)
@@ -54,3 +60,9 @@ class Users(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
+
+class Profile(models.Model):
+    user = models.OneToOneField(Users, on_delete=models.CASCADE)
+    image = models.ImageField(default='default.jpg', upload_to='static/profile_pics')
+
+

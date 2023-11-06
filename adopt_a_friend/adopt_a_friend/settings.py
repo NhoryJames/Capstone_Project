@@ -85,12 +85,8 @@ WSGI_APPLICATION = 'adopt_a_friend.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'adopt_a_friend',
-        'USER': 'root',
-        'PASSWORD': 'connection071302',
-        'HOST': 'localhost',
-        'PORT': 3306
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
 
@@ -124,7 +120,7 @@ DEFAULT_FROM_EMAIL = 'noreply<no_reply@domain.com>'
 
 AUTH_USER_MODEL = 'users.Users'
 
-LOGOUT_REDIRECT_URL = '/home/'
+LOGOUT_REDIRECT_URL = '/login/'
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/

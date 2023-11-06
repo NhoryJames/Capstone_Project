@@ -1,8 +1,11 @@
 from django.urls import path
 from . import views
+from django.contrib.auth.views import LogoutView
+from adopt_a_friend import settings
 
 urlpatterns = [
     path('signup/', views.create_user, name='signup'),
     path('login/', views.user_login, name='login'),
-    path('logout/', views.logout, name='logout'),
+    path('logout/',  LogoutView.as_view(next_page=settings.LOGOUT_REDIRECT_URL), name='logout'),
+    path('profile/', views.profile, name='profile')
     ]

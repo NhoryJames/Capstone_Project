@@ -4,7 +4,7 @@ from main.views import *
 from users.views import *
 
 urlpatterns = [
-    path('home/', index, name='index'),
+    path('', index, name='index'),
     path('application/', application, name='application'),
     path('donation/', donation, name='donation'),
     path('admin/', admin.site.urls),

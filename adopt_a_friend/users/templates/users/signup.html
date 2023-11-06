@@ -1,18 +1,62 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Create User</title>
-</head>
-<body>
-    <h1>Create User</h1>
+{% extends 'main/base.html' %}
+{% load static %}
 
-    <form method="post">
+{% block title %} Sign-up {% endblock %}
+{% block scripts %} 
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    
+
+{% endblock %}
+
+{% block image %} <div class="relative"><img src="{% static '\image\register.jpg' %}" alt="" class="absolute top-0 left-0 transform"></div> {% endblock %}
+
+{% block content %}
+
+<div class="relative">
+    <h1 class="text-shadows px-36 pt-36" style="line-height: 6rem; font-size: 5.9rem; font-family: 'Nerko One', cursive; color: rgb(255, 255, 255); ">
+        Welcome!</h1>
+    <p class="text-shadows px-36" style="line-height: 2.5rem; font-size: 2rem; font-family: 'Imprima', sans-serif; color: rgb(120 53 15);">
+        Complete the form below <br>to create an account!</p>
+</div>
+
+<div class="relative mt-36 pb-12 rounded-3xl px-52" style="background-color: #E9E9E9;">
+    <h1 class="pt-8 text-shadows" style="font-family: 'Imprima', sans-serif; font-weight: bolder; font-size: 2.3rem; text-align: center; color: rgb(120 53 15);">CREATE ACCOUNT</h1>
+    <form method="POST" action="{% url 'signup' %}" class="py-10 grid grid-cols-4 gap-x-14" style="font-family: 'Imprima', sans-serif; font-weight: bolder; font-size: 1.1rem;">
         {% csrf_token %}
-        
-        {{ form.as_p }}
-        
-        <input type="submit" value="Create User">
+                <p class="pt-3 pb-2">First Name:</p>
+                {{ form.first_name }}
+                <p class="pt-3 pb-2">Last Name:</p>
+                {{ form.last_name }}
+                <p class="pt-3 pb-2">Age:</p>
+                {{ form.age }}
+                <p class="pt-3 pb-2">Gender:</p>
+                {{ form.gender }}
+                <p class="pt-3 pb-2">Home Address:</p>
+                {{ form.home_address }}
+                <p class="pt-3 pb-2">Birth Date:</p>
+                {{ form.date_of_birth }}
+                <p class="pt-3 pb-2">Contact Number:</p>
+                {{ form.contact_num }}
+                <p class="pt-3 pb-2">Email:</p>
+                {{ form.email }}
+                <p class="pt-3 pb-2">Password:</p>
+                {{ form.password1 }}
+                <p class="pt-3 pb-2">Confirm Password:</p>
+                {{ form.password2 }}
+        <div></div><div></div><div></div>
+        <button type="submit" class="font-semibold text-white px-9 py-3 mt-6 rounded-md bg-amber-900 hover:bg-yellow-800">
+            Submit
+        </button>
     </form>
-</body>
-</html>
+</div>
+
+
+<script>
+    $(function() {
+        $(".datepicker").datepicker();
+    });
+</script>
+{% endblock %}
