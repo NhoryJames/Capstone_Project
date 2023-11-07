@@ -18,6 +18,7 @@ class UserAdminConfig(UserAdmin):
                           'date_of_birth',
                           'home_address',
                           'contact_num',
+                          'slug'
                           )
             }
          ),
@@ -38,6 +39,7 @@ class UserAdminConfig(UserAdmin):
           }
          )
     )
+    prepopulated_fields = {"slug": ("first_name","last_name")}  # new
 
 admin.site.register(Users, UserAdminConfig)
 admin.site.register(Profile)
