@@ -4,6 +4,7 @@ from django.core import validators
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 from django.utils.text import slugify
 from django.urls import reverse
+from PIL import Image
 
 
 # Create your models here.
@@ -67,6 +68,9 @@ class Users(AbstractBaseUser, PermissionsMixin):
     
     def get_absolute_url(self):
         return reverse("profile", kwargs={"slug": self.slug})
+    
+    def get_absolute_url_for_update(self):
+        return reverse("update_profile", kwargs={"slug": self.slug})
 
     def save(self, *args, **kwargs):
         self.slug = slugify(f"{self.first_name} {self.last_name}")
@@ -76,4 +80,15 @@ class Profile(models.Model):
     user = models.OneToOneField(Users, on_delete=models.CASCADE)
     image = models.ImageField(default='default.png', upload_to='static/profile_pics')
 
+    def __str__(self):
+        return f'{self.user.first_name} Profile'
+    
+    def save(self):
+        super().save()
 
+        img = Image.open(self.image.path)
+
+        if img.height > 224 or img.width > 224:
+            output_size = (224,224)
+            img.thumbnail(output_size)
+            img.save(self.image.path)

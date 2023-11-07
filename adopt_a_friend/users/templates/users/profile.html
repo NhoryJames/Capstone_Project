@@ -13,19 +13,23 @@
         <h1 class="text-shadows text-white pl-6" style="font-family: Imprima; font-size: 4rem;">
             {{user.first_name}} {{user.last_name}}
         </h1>
-        <p class="text-xl text-white text-shadows pl-6">{{user.email}}</p>
-        <p class="text-xl text-white text-shadows pl-6">{{user.contact_num}}</p>
-        <p class="text-xl text-white text-shadows pl-6">{{user.home_address}}</p>
+        <p class="text-xl pl-6">{{user.email}}</p>
+        <p class="text-xl pl-6">{{user.contact_num}}</p>
+        <p class="text-xl pl-6">{{user.home_address}}</p>
     </div>
-    <div class="col-span-1">
-        
+    <div class="col-span-1 flex justify-end">
+        <a href="{{user.get_absolute_url_for_update}}">
+            <button class="text-white px-7 py-2 rounded-md bg-amber-900 hover:bg-yellow-800">
+                Edit Profile
+            </button>
+         </a>
     </div>
 </div>
 
 <div class="mt-12 mx-36 px-20 py-8 grid grid-cols-4 gap-20 rounded-2xl" style="background-color: #f89651;">
-    <div class="col-span-1 text-shadows text-white text-lg">
-        <h1>Personal Information</h1>
-        <p class="my-3 border-t-4 border-amber-900"></p>
+    <div class="col-span-1 text-lg">
+        <h1 class="text-shadows text-white">Personal Information</h1>
+        <p class="my-3 border-t-2 border-amber-900"></p>
 
         <div class="grid grid-cols-2">
             <div class="col-span-1">
@@ -39,19 +43,24 @@
                 <p class="">{{user.gender}}</p>
             </div>
         </div>
+
+        <h1 class="pt-5 text-shadows text-white">Messages</h1>
+        <p class="my-3 border-t-2 border-amber-900"></p>
     </div>
-    <div class="col-span-2 text-shadows text-white text-lg">
-        <h1>About Me</h1>
-        <p class="my-3 border-t-4 border-amber-900"></p>
-        <p class="">{{user.bio}}</p>
-        <h1>Pet Preference</h1>
-        <p class="my-3 border-t-4 border-amber-900"></p>
-        <h1>Applications</h1>
-        <p class="my-3 border-t-4 border-amber-900"></p>
+    <div class="col-span-2 text-lg">
+        <h1 class="text-shadows text-white">About Me</h1>
+        <p class="my-3 border-t-2 border-amber-900"></p>
+        <p class="">{{user.user_bio}}</p>
+       
+        <h1 class="pt-5 text-shadows text-white">Pet Preference</h1>
+        <p class="my-3 border-t-2 border-amber-900"></p>
+
+        <h1 class="pt-5 text-shadows text-white">Applications</h1>
+        <p class="my-3 border-t-2 border-amber-900"></p>
     </div>
     <div class="col-span-1 text-shadows text-white text-lg">
         <h1>Posts</h1>
-        <p class="my-3 border-t-4 border-amber-900"></p>
+        <p class="my-3 border-t-2 border-amber-900"></p>
     </div>
 </div>
 

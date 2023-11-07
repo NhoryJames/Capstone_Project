@@ -1,5 +1,5 @@
 from django import forms
-from .models import Users
+from .models import Users, Profile
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 
 class UsersForm(UserCreationForm):
@@ -51,5 +51,30 @@ class LoginForm(AuthenticationForm):
         'class': 'w-full px-6 py-3 mb-2 border border-slate-600 rounded-lg font-medium'
     }))
 
+class UserUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Users
+        fields = (
+            'home_address', 
+            'contact_num',
+            'user_bio',
+        )
+
+        widgets = {
+            'home_address' : forms.TextInput(attrs={'class': 'w-full px-6 py-3 mb-2 rounded-lg font-medium'}), 
+            'contact_num' : forms.TextInput(attrs={'class': 'w-full px-6 py-3 mb-2 rounded-lg font-medium'}), 
+            'user_bio' : forms.Textarea(attrs={'class': 'w-full px-6 py-3 mb-2 rounded-lg font-medium'}), 
+        }
+
+        labels = {
+            'home_address': 'Home Address:',  
+            'contact_num': 'Contact Number:',
+            'user_bio': 'User Bio:',
+        }
     
-    
+class ProfilePictureUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = (
+            'image',
+        )
