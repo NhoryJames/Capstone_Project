@@ -1,0 +1,16 @@
+{% extends 'staff/base.html' %}
+{% load static %}
+
+{% block title %} Staff Dashboard {% endblock %}
+
+{% block content %}
+
+<form action="" method="POST">
+    {% csrf_token %}
+    {{form.as_p}}
+    <button type="submit" class="font-semibold text-white px-9 py-3 mt-6 rounded-md bg-amber-900 hover:bg-yellow-800">
+        Submit
+    </button>
+</form>
+
+{% endblock %}

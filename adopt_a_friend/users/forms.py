@@ -37,9 +37,6 @@ class UsersForm(UserCreationForm):
             'contact_num' : forms.TextInput(attrs={'class': 'w-full px-6 py-3 mb-2 rounded-lg font-medium'}), 
         }
 
-    
-
-
 class LoginForm(AuthenticationForm):
     username = forms.CharField(widget=forms.TextInput(attrs={
         'placeholder': 'Your email',

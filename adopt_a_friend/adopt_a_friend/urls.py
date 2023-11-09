@@ -2,6 +2,8 @@ from django.contrib import admin
 from django.urls import path, include
 from main.views import *
 from users.views import *
+from pets.views import *
+from staff.views import *
 
 urlpatterns = [
     path('', index, name='index'),
@@ -12,4 +14,6 @@ urlpatterns = [
     path('', include('videochat.urls')),
     path('verification/', include('verify_email.urls')),	
     path('', include("users.urls")),
+    path('', include("pets.urls")),
+    path('', include("staff.urls")),
 ]

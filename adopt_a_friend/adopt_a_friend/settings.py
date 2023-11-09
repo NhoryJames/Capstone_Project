@@ -45,6 +45,8 @@ INSTALLED_APPS = [
     'main',
     'users',
     'videochat',
+    'pets',
+    'staff',
 ]
 
 MIDDLEWARE = [

@@ -22,12 +22,13 @@
             border-left: 4px solid #7c340c;
             height: 225px;
         }
+
     </style>
     {% block css %} {% endblock %}
 
 </head>
-<body style="background-color: #E9E9E9;">
-    {% block image %} {% endblock %}
+<body style="background-color: #f2ebdd;">
+    {% block image %}{% endblock %}
     <div>
         <nav class="py-5 px-20 flex justify-between items-center" style="font-family: 'Imprima', sans-serif; background-color: #f89651;">
             <a href="/" class="relative text-xl font-semibold">Adopt A Friend</a>
@@ -39,13 +40,13 @@
                 {% if user.is_authenticated %}
                 <a href="{{user.get_absolute_url}}" class="py-2 text-base font font-semibold hover:text-white">Profile</a>
                 <a href="{% url 'logout' %}">
-                <button class="font-semibold text-white px-9 py-2 rounded-md bg-amber-900 hover:bg-yellow-800">
+                <button class="shadow-lg transition ease-in-out delay-150 font-semibold text-white px-9 py-2 rounded-md hover:-translate-y-1 hover:scale-110 duration-300" style="background-color: #ffcf72;">
                     Logout
                 </button>
                 </a>
                 {% else %}
                 <a href="{% url 'login' %}">
-                    <button class="transition ease-in-out delay-150 font-semibold text-white px-9 py-2 rounded-md bg-amber-900 hover:bg-yellow-800 hover:-translate-y-1 hover:scale-110 duration-300">
+                    <button class="shadow-lg transition ease-in-out delay-150 font-semibold text-white px-9 py-2 rounded-md hover:-translate-y-1 hover:scale-110 duration-300" style="background-color: #f89651;">
                         Login
                     </button>
                 </a>
@@ -58,12 +59,3 @@
     {% block content %}
 
     {% endblock %}
-
-        
-    
-
-</body>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.1/flowbite.min.js"></script>
-
-</html>
