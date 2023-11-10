@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Users
 from django.contrib.auth import login as auth_login, logout
-from .forms import UsersForm, LoginForm, ProfilePictureUpdateForm, UserUpdateForm
+from .forms import UsersForm, LoginForm, ProfilePictureUpdateForm, UserUpdateForm, PreferenceForm, PersonalityPreferenceFormSet
 from verify_email.email_handler import send_verification_email
 from django.contrib.auth.decorators import login_required
 from .decorators import unauthenticated_user
@@ -14,16 +14,33 @@ from django.urls import reverse
 def create_user(request):
     if request.method == 'POST':
         form = UsersForm(request.POST)
-        if form.is_valid():
-            # Save the user object
+        preference_form = PreferenceForm(request.POST)
+        personality_preference_formset = PersonalityPreferenceFormSet(request.POST)
+
+        if form.is_valid() and preference_form.is_valid() and personality_preference_formset.is_valid():
             inactive_user = send_verification_email(request, form)
             user = form.save()
-            # Redirect to a success page or do something else
+            
+            preference = preference_form.save(commit=False)
+            preference.adopter = user
+            preference.save()
+
+            for personality_preference_form in personality_preference_formset:
+                personality_preference = personality_preference_form.save(commit=False)
+                personality_preference.preferenceId = preference
+                personality_preference.save()
+
             return redirect('/sent_email/')
     else:
         form = UsersForm()
+        preference_form = PreferenceForm()
+        personality_preference_formset = PersonalityPreferenceFormSet()
 
-    return render(request, 'users/signup.html', {'form': form})
+    return render(request, 'users/signup.html', {
+        'form': form, 
+        'preference_form': preference_form, 
+        'personality_preference_formset': personality_preference_formset
+        })
 
 @unauthenticated_user
 def user_login(request):

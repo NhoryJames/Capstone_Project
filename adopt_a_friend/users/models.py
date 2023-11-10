@@ -7,7 +7,77 @@ from django.urls import reverse
 from PIL import Image
 
 
-# Create your models here.
+COLOR_CHOICES = (
+    ('Black', 'Black'),
+    ('White', 'White'),
+    ('Gray', 'Gray'),
+    ('Brown', 'Brown'),
+    ('Orange', 'Orange'),
+    ('Cream', 'Cream'),
+    ('Bi-color', 'Bi-color'),
+    ('Tricolor', 'Tricolor')
+)
+
+PERSONALITY_CHOICES = (
+    ('Playful', 'Playful'),
+    ('Cuddly', 'Cuddly'),
+    ('Energetic', 'Energetic'),
+    ('Laid_back', 'Laid-back'),
+    ('Curious', 'Curious'),
+    ('Social', 'Social'),
+    ('Independent', 'Independent'),
+    ('Shy/Timid', 'Shy/Timid'),
+    ('Bold/Confident', 'Bold/Confident'),
+    ('Intelligent', 'Intelligent'),
+    ('Mischievous', 'Mischievous'),
+    ('Reserved', 'Reserved'),
+    ('Protective', 'Protective'),
+    ('Adventurous', 'Adventurous'),
+    ('Affectionate', 'Affectionate'),
+    ('Patient', 'Patient'),
+    ('Stubborn', 'Stubborn'),
+    ('Gentle', 'Gentle'),
+    ('Sociable', 'Sociable'),
+    ('Talkative', 'Talkative'),
+)
+
+GENDER_CHOICES = (
+    ('Male', 'Male'),
+    ('Female', 'Female'),
+    ('Other', 'Other')
+)
+
+ANIMAL_TYPES_CHOICES = (
+    ('Dog', 'Dog'),
+    ('Cat', 'Cat')
+)
+
+PET_SIZE_CHOICES = (
+    ('Extra Small', 'Extra Small'),
+    ('Small', 'Small'),
+    ('Medium', 'Medium'),
+    ('Large', 'Large')
+)
+
+HEALTH_CONDITIONS = (
+    ('Healthy', 'Healthy'),
+    ('With Disease/Illness', 'With Disease/Illness'),
+    ('Chronic Condition', 'Chronic Condition'),
+    ('Under Treatment', 'Under Treatment'),
+    ('Recovering', 'Recovering'),
+    ('Injured', 'Injured'),
+    ('Behavioral Issues', 'Behavioral Issues'),
+    ('Senior Care', 'Senior Care'),
+)
+
+def generate_preference_key():
+    last_record = Preference.objects.order_by('-preferenceId').first()
+    if last_record is not None:
+        last_id = int(last_record.preferenceId[3:])  # Extract the numeric part of the petId
+        new_id = last_id + 1
+    else:
+        new_id = 1
+    return f'PRF{str(new_id).zfill(4)}'
 
 class CustomAccountManager(BaseUserManager):
     # ------ FOR CREATING USER ACCOUNTS ------ #
@@ -92,3 +162,21 @@ class Profile(models.Model):
             output_size = (224,224)
             img.thumbnail(output_size)
             img.save(self.image.path)
+
+class Preference(models.Model):
+    
+    preferenceId = models.CharField(max_length=10, default=generate_preference_key, primary_key=True, unique=True)
+    adopter = models.ForeignKey(Users, null=False, blank=False, on_delete=models.CASCADE)
+    preferredAnimalType = models.CharField(max_length=20, choices=ANIMAL_TYPES_CHOICES, null=False, blank=False)
+    preferredBreed = models.CharField(max_length=50, null=False, blank=False)
+    preferredAge = models.IntegerField(null=False, blank=False)
+    preferredGender = models.CharField(max_length=20, choices=GENDER_CHOICES, null=False, blank=False, default="Others")
+    preferredSize = models.CharField(max_length=20, choices=PET_SIZE_CHOICES, null=False, blank=False)
+    preferredColor = models.CharField(max_length=20, choices=COLOR_CHOICES, null=False, blank=False, default="Brown")
+    preferredSpayedorNeutered = models.BooleanField()
+    preferredHealthCondition = models.CharField(max_length=30, null=False, choices=HEALTH_CONDITIONS)
+    
+class PersonalityPreference(models.Model):
+
+    preferenceId = models.ForeignKey(Preference, null=False, blank=False, on_delete=models.CASCADE)
+    preferredPersonality = models.CharField(max_length=50, choices=PERSONALITY_CHOICES, blank=False, null=False, default="Intelligent")

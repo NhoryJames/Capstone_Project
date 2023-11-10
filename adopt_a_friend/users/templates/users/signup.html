@@ -22,34 +22,78 @@
         Complete the form below <br>to create an account!</p>
 </div>
 
-<div class="relative mt-36 pb-12 rounded-3xl px-52" style="background-color: #E9E9E9;">
-    <h1 class="pt-8 text-shadows" style="font-family: 'Imprima', sans-serif; font-weight: bolder; font-size: 2.3rem; text-align: center; color: rgb(120 53 15);">CREATE ACCOUNT</h1>
-    <form method="POST" action="{% url 'signup' %}" class="py-10 grid grid-cols-4 gap-x-14" style="font-family: 'Imprima', sans-serif; font-weight: bolder; font-size: 1.1rem;">
+<div class="relative mt-36 pb-12 rounded-3xl px-80" style="background-color: #E9E9E9;">
+    <form method="POST" action="{% url 'signup' %}" class="py-10 grid grid-cols-2 gap-x-14" style="font-family: 'Imprima', sans-serif; font-size: 1.1rem;">
         {% csrf_token %}
-                <p class="pt-3 pb-2">First Name:</p>
-                {{ form.first_name }}
-                <p class="pt-3 pb-2">Last Name:</p>
-                {{ form.last_name }}
-                <p class="pt-3 pb-2">Age:</p>
-                {{ form.age }}
-                <p class="pt-3 pb-2">Gender:</p>
-                {{ form.gender }}
-                <p class="pt-3 pb-2">Home Address:</p>
-                {{ form.home_address }}
-                <p class="pt-3 pb-2">Birth Date:</p>
-                {{ form.date_of_birth }}
-                <p class="pt-3 pb-2">Contact Number:</p>
-                {{ form.contact_num }}
-                <p class="pt-3 pb-2">Email:</p>
-                {{ form.email }}
-                <p class="pt-3 pb-2">Password:</p>
-                {{ form.password1 }}
-                <p class="pt-3 pb-2">Confirm Password:</p>
-                {{ form.password2 }}
-        <div></div><div></div><div></div>
+
+        <!-- USER FORM -->
+        <div class="col-span-2">
+            <h1 class="font-bold mt-14 text-4xl" style="font-family: 'Imprima', sans-serif;"> Personal Information </h1>
+            <p class="border-b-2 mb-6 mt-6 border-black"></p>
+        </div>
+        <div class="col-span-2">
+            {{form.email.label_tag}}
+            {{form.email}}
+        </div>
+        <div>
+            {{form.password1.label_tag}}
+            {{form.password1}}
+        </div>
+        <div>
+            {{form.password2.label_tag}}
+            {{form.password2}}
+        </div>
+        <div>
+            {{form.first_name.label_tag}}
+            {{form.first_name}}
+        </div>
+        <div>
+            {{form.last_name.label_tag}}
+            {{form.last_name}}
+        </div>
+        <div>
+            {{form.gender.label_tag}}
+            {{form.gender}}
+        </div>
+        <div>
+            {{form.age.label_tag}}
+            {{form.age}}
+        </div>
+        <div>
+            {{form.date_of_birth.label_tag}}
+            {{form.date_of_birth}}
+        </div>
+        <div>
+            {{form.contact_num.label_tag}}
+            {{form.contact_num}}
+        </div>
+        <div class="col-span-2">
+            {{form.home_address.label_tag}}
+            {{form.home_address}}
+        </div>
+
+        <!-- USER PREFERENCE FORM -->
+        <div class="col-span-2">
+            <h1 class="font-bold mt-14 text-4xl" style="font-family: 'Imprima', sans-serif;"> Pet Preference </h1>
+            <p class="border-b-2 mb-6 mt-6 border-black"></p>
+        </div>
+        {{preference_form.as_p}}
+
+
+        <!-- PET PERSONALITY FORMSET -->
+        <div class="col-span-2 mt-10 mb-4">
+            <p class="font-bold text-xl">Choose 3 preferred pet personalities.</p>
+        </div>
+        {{personality_preference_formset.as_p}}
+        
+        <!-- BUTTON --> 
+        <div></div>
+        <div class="col-span-2 flex justify-end">
         <button type="submit" class="font-semibold text-white px-9 py-3 mt-6 rounded-md bg-amber-900 hover:bg-yellow-800">
             Submit
         </button>
+        </div>
+        
     </form>
 </div>
 
