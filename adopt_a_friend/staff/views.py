@@ -17,14 +17,21 @@ def staff_pet_dashboard(request):
 
 def add_pet(request):
     if request.method == 'POST':
-        form = AddPetForm(request.POST)
-        if form.is_valid():
-            Pet = form.save()
-            return redirect('staff_pet_dashboard')
-    else:
-        form = AddPetForm()
+        pet_form = PetForm(request.POST)
+        pet_medical_form = PetMedicalForm(request.POST)
 
-    return render(request, 'staff/add_pet.html', {'form': form})
+        if pet_form.is_valid() and pet_medical_form.is_valid():
+            pet_instance = pet_form.save()
+            petmedical = pet_medical_form.save(commit=False)
+            petmedical.petId = pet_instance
+            petmedical.save()
+            return redirect('staff_pet_dashboard')
+
+    else:
+        pet_form = PetForm()
+        pet_medical_form = PetMedicalForm()
+    
+    return render(request, 'staff/add_pet.html', {'pet_form': pet_form, 'pet_medical_form': pet_medical_form})
 
 def edit_pet(request):
     return render(request, 'staff/edit_pet.html')

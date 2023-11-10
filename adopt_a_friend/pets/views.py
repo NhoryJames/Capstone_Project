@@ -7,3 +7,6 @@ def pet_profile(request):
 
 def pet_page(request):
     return render(request, 'pets/adoptme.html')
+
+def application(request):
+    return render(request, 'pets/application.html')

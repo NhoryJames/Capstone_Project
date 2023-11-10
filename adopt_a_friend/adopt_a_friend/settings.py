@@ -47,6 +47,8 @@ INSTALLED_APPS = [
     'videochat',
     'pets',
     'staff',
+    'recommendation',
+    'donation',
 ]
 
 MIDDLEWARE = [

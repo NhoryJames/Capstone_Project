@@ -9,8 +9,5 @@ def index(response):
 def login(response):
     return render(response, "main/login.html")
 
-def application(response):
-    return render(response, "main/application.html")
-
 def donation(response):
     return render(response, "main/donation.html")

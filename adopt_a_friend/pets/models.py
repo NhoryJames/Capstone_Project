@@ -5,6 +5,40 @@ from django.utils.text import slugify
 from django.urls import reverse
 from django.utils import timezone
 
+COLOR_CHOICES = (
+    ('Black', 'Black'),
+    ('White', 'White'),
+    ('Gray', 'Gray'),
+    ('Brown', 'Brown'),
+    ('Orange', 'Orange'),
+    ('Cream', 'Cream'),
+    ('Bi-color', 'Bi-color'),
+    ('Tricolor', 'Tricolor')
+)
+
+PERSONALITY_CHOICES = (
+    ('Playful', 'Playful'),
+    ('Cuddly', 'Cuddly'),
+    ('Energetic', 'Energetic'),
+    ('Laid_back', 'Laid-back'),
+    ('Curious', 'Curious'),
+    ('Social', 'Social'),
+    ('Independent', 'Independent'),
+    ('Shy/Timid', 'Shy/Timid'),
+    ('Bold/Confident', 'Bold/Confident'),
+    ('Intelligent', 'Intelligent'),
+    ('Mischievous', 'Mischievous'),
+    ('Reserved', 'Reserved'),
+    ('Protective', 'Protective'),
+    ('Adventurous', 'Adventurous'),
+    ('Affectionate', 'Affectionate'),
+    ('Patient', 'Patient'),
+    ('Stubborn', 'Stubborn'),
+    ('Gentle', 'Gentle'),
+    ('Sociable', 'Sociable'),
+    ('Talkative', 'Talkative'),
+)
+
 GENDER_CHOICES = (
     ('Male', 'Male'),
     ('Female', 'Female'),
@@ -37,7 +71,8 @@ HEALTH_CONDITIONS = (
 def generate_pet_key():
     last_record = Pet.objects.order_by('-petId').first()
     if last_record is not None:
-        new_id = F('petId') + 1
+        last_id = int(last_record.petId[3:])  # Extract the numeric part of the petId
+        new_id = last_id + 1
     else:
         new_id = 1
     return f'PET{str(new_id).zfill(4)}'
@@ -51,14 +86,16 @@ def generate_med_key():
     return f'MED{str(new_id).zfill(4)}'
 
 class Pet(models.Model):
-    petId = models.CharField(max_length=6, default=generate_pet_key, primary_key=True, unique=True)
+    petId = models.CharField(max_length=10, default=generate_pet_key, primary_key=True, unique=True)
     petName = models.CharField(max_length=50, null=False, blank=False, unique=True)
     animalType = models.CharField(max_length=20, choices=ANIMAL_TYPES_CHOICES, null=False, blank=False)
     breed = models.CharField(max_length=50, null=False, blank=False)
     petAge = models.IntegerField(null=False, blank=False)
     petGender = models.CharField(max_length=20, choices=GENDER_CHOICES, null=False, blank=False, default="Others")
     petSize = models.CharField(max_length=20, choices=PET_SIZE_CHOICES, null=False, blank=False)
+    petColor = models.CharField(max_length=20, choices=COLOR_CHOICES, null=False, blank=False, default="Brown")
     petDescription = models.TextField(max_length=500, blank=True, null=True)
+    petPersonality = models.CharField(max_length=50, choices=PERSONALITY_CHOICES, blank=False, null=False, default="Intelligent")
     dateAcquired = models.DateField(blank=False, null=False, default=timezone.now)
     isTrained = models.BooleanField(default=False)
     slug = models.SlugField(unique=True, blank=True)
@@ -73,24 +110,16 @@ class Pet(models.Model):
         self.slug = slugify(f"{self.petName}")
         super(Pet, self).save(*args, **kwargs)
 
-class PetPersonality(models.Model):
-    petId = models.ForeignKey(Pet, null=False, blank=False, on_delete=models.CASCADE)
-    personality = models.CharField(max_length=50, null=False, blank=False)
-
-class PetColor(models.Model):
-    petId = models.ForeignKey(Pet, null=False, blank=False, on_delete=models.CASCADE)
-    color = models.CharField(max_length=50, null=False, blank=False)
-
 class PetImage(models.Model):
     petId = models.ForeignKey(Pet, null=False, blank=False, on_delete=models.CASCADE)
     petImage = models.ImageField()
 
 class PetMedical(models.Model):
-    medId = models.CharField(max_length=6, default=generate_med_key, primary_key=True, unique=True)
     petId = models.ForeignKey(Pet, null=False, blank=False, on_delete=models.CASCADE)
-    isVacinated = models.BooleanField()
-    isNeutered = models.BooleanField()
-    isSpayed = models.BooleanField()
+    petWeight = models.CharField(max_length=30, null=False, default='0')
+    isVaccinated = models.BooleanField()
+    isNeutered_or_Spayed = models.BooleanField()
     healthCondition = models.CharField(max_length=30, null=False, choices=HEALTH_CONDITIONS)
-    disease_or_illness = models.CharField(max_length=100, null=False)
+    disease = models.CharField(max_length=100, null=False)
+    comment = models.TextField(max_length=500, blank=True, null=True)
     
