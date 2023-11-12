@@ -2,6 +2,8 @@ from django import forms
 from django.forms import inlineformset_factory
 from .models import Users, Profile, Preference, PersonalityPreference
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.core.exceptions import ValidationError
+
 
 class UsersForm(UserCreationForm):
     password1 = forms.CharField(
@@ -14,13 +16,39 @@ class UsersForm(UserCreationForm):
         widget=forms.PasswordInput(attrs={'class': 'mt-2 border-2 border-black w-full px-6 py-3 mb-2 rounded-lg font-medium'}),
         help_text="Please enter the same password as above, for verification."
     )
+    
+    def clean_contact_num(self):
+        value = self.cleaned_data['contact_num']
+
+        if len(value) != 11 or not value.isdigit():
+            raise ValidationError(
+                "Contact number must be 11 digits long and contain only digits."
+            )
+
+        return value
+
+    def clean_first_name(self):
+        value = self.cleaned_data['first_name']
+
+        if not value.isalpha() and not value.isspace():
+            raise ValidationError("First name must contain only letters.")
+
+        return value
+
+    def clean_last_name(self):
+        value = self.cleaned_data['last_name']
+
+        if not value.isalpha() and not value.isspace():
+            raise ValidationError("Last name must contain only letters.")
+
+        return value
+    
     class Meta:
         model = Users
         fields = (
             'email', 
             'first_name', 
             'last_name', 
-            'age', 
             'gender', 
             'date_of_birth', 
             'home_address', 
@@ -31,12 +59,23 @@ class UsersForm(UserCreationForm):
             'email' : forms.TextInput(attrs={'class': 'mt-2 border-2 border-black w-full px-6 py-3 mb-2 rounded-lg font-medium'}),
             'first_name' : forms.TextInput(attrs={'class': 'mt-2 border-2 border-black w-full px-6 py-3 mb-2 rounded-lg font-medium'}),
             'last_name' : forms.TextInput(attrs={'class': 'mt-2 border-2 border-black w-full px-6 py-3 mb-2 rounded-lg font-medium'}),   
-            'age' : forms.NumberInput(attrs={'class': 'mt-2 border-2 border-black w-full px-6 py-3 mb-2 rounded-lg font-medium'}),
             'gender' : forms.Select(attrs={'class': 'mt-2 border-2 border-black w-full px-6 py-3 mb-2 rounded-lg font-medium'}),
             'home_address' : forms.TextInput(attrs={'class': 'mt-2 border-2 border-black w-full px-6 py-3 mb-2 rounded-lg font-medium'}), 
             'date_of_birth' : forms.TextInput(attrs={'class': 'mt-2 border-2 border-black w-full px-6 py-3 mb-2 rounded-lg font-medium date-picker'}), 
             'contact_num' : forms.TextInput(attrs={'class': 'mt-2 border-2 border-black w-full px-6 py-3 mb-2 rounded-lg font-medium'}), 
         }
+
+        labels = {
+            'email' : 'Email: ',
+            'first_name' : 'First Name:',
+            'last_name' : 'Last Name',
+            'gender' : 'Gender',
+            'home_address' : 'Home Address',
+            'date_of_birth' : 'Birth Date:',
+            'contact_num' : 'Contact Number:',
+        }
+
+
 
 class LoginForm(AuthenticationForm):
     username = forms.CharField(widget=forms.TextInput(attrs={

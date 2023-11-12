@@ -5,6 +5,7 @@ from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseU
 from django.utils.text import slugify
 from django.urls import reverse
 from PIL import Image
+from datetime import date
 
 
 COLOR_CHOICES = (
@@ -118,7 +119,7 @@ class Users(AbstractBaseUser, PermissionsMixin):
     first_name = models.CharField(max_length=50, blank=False, null=False)
     last_name = models.CharField(max_length=50, blank=False, null=False)
     age = models.IntegerField(blank=False, null=False)
-    gender = models.CharField(max_length=20, blank=False, null=False, choices=GENDER_CHOICES)
+    gender = models.CharField(max_length=20, blank=False, null=False, choices=GENDER_CHOICES, default="")
     date_of_birth = models.DateField(blank=False, null=False)
     home_address = models.CharField(max_length=200, blank=False, null=False)
     contact_num = models.CharField(max_length=15, blank=False, null=False)
@@ -131,7 +132,7 @@ class Users(AbstractBaseUser, PermissionsMixin):
     objects = CustomAccountManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['first_name', 'last_name', 'age', 'gender' ,'date_of_birth', 'home_address', 'contact_num']
+    REQUIRED_FIELDS = ['first_name', 'last_name', 'gender' ,'date_of_birth', 'home_address', 'contact_num']
 
     def __str__(self):
         return self.email
@@ -143,8 +144,14 @@ class Users(AbstractBaseUser, PermissionsMixin):
         return reverse("update_profile", kwargs={"slug": self.slug})
 
     def save(self, *args, **kwargs):
+        today = date.today()
+        age = today.year - self.date_of_birth.year - ((today.month, today.day) < (self.date_of_birth.month, self.date_of_birth.day))
+        self.age = age
+
         self.slug = slugify(f"{self.first_name} {self.last_name}")
         super(Users, self).save(*args, **kwargs)
+
+        
 
 class Profile(models.Model):
     user = models.OneToOneField(Users, on_delete=models.CASCADE)
@@ -170,13 +177,13 @@ class Preference(models.Model):
     preferredAnimalType = models.CharField(max_length=20, choices=ANIMAL_TYPES_CHOICES, null=False, blank=False)
     preferredBreed = models.CharField(max_length=50, null=False, blank=False)
     preferredAge = models.IntegerField(null=False, blank=False)
-    preferredGender = models.CharField(max_length=20, choices=GENDER_CHOICES, null=False, blank=False, default="Others")
+    preferredGender = models.CharField(max_length=20, choices=GENDER_CHOICES, null=False, blank=False, default="")
     preferredSize = models.CharField(max_length=20, choices=PET_SIZE_CHOICES, null=False, blank=False)
-    preferredColor = models.CharField(max_length=20, choices=COLOR_CHOICES, null=False, blank=False, default="Brown")
+    preferredColor = models.CharField(max_length=20, choices=COLOR_CHOICES, null=False, blank=False, default="")
     preferredSpayedorNeutered = models.BooleanField()
     preferredHealthCondition = models.CharField(max_length=30, null=False, choices=HEALTH_CONDITIONS)
     
 class PersonalityPreference(models.Model):
 
     preferenceId = models.ForeignKey(Preference, null=False, blank=False, on_delete=models.CASCADE)
-    preferredPersonality = models.CharField(max_length=50, choices=PERSONALITY_CHOICES, blank=False, null=False, default="Intelligent")
+    preferredPersonality = models.CharField(max_length=50, choices=PERSONALITY_CHOICES, blank=False, null=False, default="")

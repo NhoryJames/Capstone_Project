@@ -23,7 +23,7 @@
 </div>
 
 <div class="relative mt-36 pb-12 rounded-3xl px-80" style="background-color: #E9E9E9;">
-    <form method="POST" action="{% url 'signup' %}" class="py-10 grid grid-cols-2 gap-x-14" style="font-family: 'Imprima', sans-serif; font-size: 1.1rem;">
+    <form method="POST" action="{% url 'signup' %}" class="py-10 grid grid-cols-2 gap-x-14 gap-y-4" style="font-family: 'Imprima', sans-serif; font-size: 1.1rem;">
         {% csrf_token %}
 
         <!-- USER FORM -->
@@ -38,26 +38,51 @@
         <div>
             {{form.password1.label_tag}}
             {{form.password1}}
+            {% if form.errors.password1 %}
+            <div class="text-red-600">
+                {% for error in form.errors.password1 %}
+                    {{ error }}
+                {% endfor %}
+            </div>
+            {% endif %}
         </div>
         <div>
             {{form.password2.label_tag}}
             {{form.password2}}
+            {% if form.errors.password2 %}
+            <div class="text-red-600">
+                {% for error in form.errors.password2 %}
+                    {{ error }}
+                {% endfor %}
+            </div>
+            {% endif %}
+            
         </div>
         <div>
             {{form.first_name.label_tag}}
             {{form.first_name}}
+            {% if form.errors.first_name %}
+            <div class="text-red-600">
+                {% for error in form.errors.first_name %}
+                    {{ error }}
+                {% endfor %}
+            </div>
+            {% endif %}
         </div>
         <div>
             {{form.last_name.label_tag}}
             {{form.last_name}}
+            {% if form.errors.last_name %}
+            <div class="text-red-600">
+                {% for error in form.errors.last_name %}
+                    {{ error }}
+                {% endfor %}
+            </div>
+            {% endif %}
         </div>
         <div>
             {{form.gender.label_tag}}
             {{form.gender}}
-        </div>
-        <div>
-            {{form.age.label_tag}}
-            {{form.age}}
         </div>
         <div>
             {{form.date_of_birth.label_tag}}
@@ -66,6 +91,13 @@
         <div>
             {{form.contact_num.label_tag}}
             {{form.contact_num}}
+            {% if form.errors.contact_num %}
+            <div class="text-red-600">
+                {% for error in form.errors.contact_num %}
+                    {{ error }}
+                {% endfor %}
+            </div>
+            {% endif %}
         </div>
         <div class="col-span-2">
             {{form.home_address.label_tag}}
