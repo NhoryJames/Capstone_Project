@@ -4,6 +4,7 @@ from django.db.models import F
 from django.utils.text import slugify
 from django.urls import reverse
 from django.utils import timezone
+from PIL import Image
 
 COLOR_CHOICES = (
     ('Black', 'Black'),
@@ -106,16 +107,29 @@ class Pet(models.Model):
     def get_absolute_pet_url(self):
         return reverse("pet_profile", kwargs={"slug": self.slug})
     
+    def get_absolute_pet_url_for_update(self):
+        return reverse("edit_pet", kwargs={"slug": self.slug})
+
     def save(self, *args, **kwargs):
         self.slug = slugify(f"{self.petName}")
         super(Pet, self).save(*args, **kwargs)
 
 class PetImage(models.Model):
     petId = models.ForeignKey(Pet, null=False, blank=False, on_delete=models.CASCADE)
-    petImage = models.ImageField()
+    petImage = models.ImageField(upload_to='static/pet_pics')
+    
+    # def save(self, *args, **kwargs):
+    #     super().save(*args, **kwargs)
+
+    #     img = Image.open(self.petImage.path)
+
+    #     if img.height > 224 or img.width > 224:
+    #         output_size = (224,224)
+    #         img.thumbnail(output_size)
+    #         img.save(self.petImage.path)
 
 class PetMedical(models.Model):
-    petId = models.ForeignKey(Pet, null=False, blank=False, on_delete=models.CASCADE)
+    petId = models.OneToOneField(Pet, null=False, blank=False, on_delete=models.CASCADE)
     petWeight = models.CharField(max_length=30, null=False, default='0')
     isVaccinated = models.BooleanField()
     isNeutered_or_Spayed = models.BooleanField()

@@ -24,6 +24,8 @@
 
 </head>
 <body style="background-image: url('/static/image/staffbg.png'); background-size: cover;">
+    
+
     <a href="javascript:history.back()" class="text-black text-2xl font-bold ml-10 my-14" style="font-family: 'Imprima';">
         <button class="mt-10 ml-10 transition ease-in-out delay-150 font-semibold px-8 py-2 rounded-md hover:-translate-y-1 hover:scale-110 duration-300">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="Black" class="w-6 h-6">
@@ -32,12 +34,14 @@
         </button>
      </a>
     <div class="mx-64 mt-10 mb-20 py-12 px-16 bg-white rounded-3xl shadow-lg">
+        <h1 class=" text-black text-5xl pb-6 text-center" style="font-family: 'Imprima'; font-weight: bold;">Add Pet Form</h1>
         <form action="" method="POST" enctype="multipart/form-data" class="grid grid-cols-2 gap-x-10" style="font-family: 'Imprima'; font-size: 18px;">
             <div class="col-span-2">
-                <h1 class=" text-black text-5xl" style="font-family: 'Imprima'; font-weight: bold;">Pet Information:</h1>
+                <h1 class=" text-black text-3xl" style="font-family: 'Imprima'; font-weight: bold;">Pet Information:</h1>
                 <p class="border-b-2 mb-6 mt-6 border-black"></p>
             </div>
             {% csrf_token %}
+            <!-- PET INFORMATION -->
             <div>
                 {{ pet_form.petName.label_tag }}
                 {{ pet_form.petName }}
@@ -78,9 +82,10 @@
                 {{ pet_form.isTrained.label_tag }}
                 {{ pet_form.isTrained }}
             </div>
-    
+
+            <!-- PET MEDICAL -->
             <div class="col-span-2 mt-14">
-                <h1 class=" text-black text-5xl" style="font-family: 'Imprima'; font-weight: bold;">Pet Medical Information:</h1>
+                <h1 class=" text-black text-3xl" style="font-family: 'Imprima'; font-weight: bold;">Pet Medical Information:</h1>
                 <p class="border-b-2 mb-6 mt-6 border-black"></p>
             </div>
             <div class="col-span-2">
@@ -107,6 +112,21 @@
                 {{ pet_medical_form.isNeutered_or_Spayed.label_tag }} <br>
                 {{ pet_medical_form.isNeutered_or_Spayed }}
             </div>
+
+            <!-- PET IMAGE -->
+            <div class="col-span-2 mt-14">
+                <h1 class=" text-black text-3xl" style="font-family: 'Imprima'; font-weight: bold;">Pet Images:</h1>
+                <p class="border-b-2 mb-6 mt-6 border-black"></p>
+            </div>
+
+            {{ pet_image_formset.management_form }}
+
+            {% for form in pet_image_formset.forms %}
+                <div class="my-2">
+                    {{ form.as_p }}
+                </div>
+            {% endfor %}
+
             <div></div>
             <div class="flex justify-end">
                 <button type="submit" class="font-semibold text-white px-16 py-3 mt-6 rounded-md bg-amber-900 hover:bg-yellow-800">

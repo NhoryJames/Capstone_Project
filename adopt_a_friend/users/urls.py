@@ -8,8 +8,8 @@ urlpatterns = [
     path('login/', views.user_login, name='login'),
     path('logout/',  LogoutView.as_view(next_page=settings.LOGOUT_REDIRECT_URL), name='logout'),
     
-    path('profile/<slug:slug>', views.profile, name='profile'),
-    path('profile/update/<slug:slug>', views.update_profile, name='update_profile'),
+    path('profile/<slug:slug>/<int:id>/', views.profile, name='profile'),
+    path('profile/update/<slug:slug>/<int:id>/', views.update_profile, name='update_profile'),
     
     path('sent_email/', views.sent_email, name='sent_email'),
     ]

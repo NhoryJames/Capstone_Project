@@ -10,3 +10,6 @@ def donation_profile(request):
 
 def payment(request):
     return render(request, 'donation/payment.html')
+
+def payment(request):
+    return render(request, 'donation/crowdfunding_page.html')

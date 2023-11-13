@@ -71,6 +71,12 @@ HEALTH_CONDITIONS = (
     ('Senior Care', 'Senior Care'),
 )
 
+GENDER_CHOICES = (
+        ('M', 'Male'),
+        ('F', 'Female'),
+        ('O', 'Other')
+)
+
 def generate_preference_key():
     last_record = Preference.objects.order_by('-preferenceId').first()
     if last_record is not None:
@@ -109,11 +115,6 @@ class CustomAccountManager(BaseUserManager):
 
 
 class Users(AbstractBaseUser, PermissionsMixin):
-    GENDER_CHOICES = (
-        ('M', 'Male'),
-        ('F', 'Female'),
-        ('O', 'Other')
-    )
      
     email = models.EmailField(unique=True, blank=False, null=False)
     first_name = models.CharField(max_length=50, blank=False, null=False)
@@ -138,10 +139,10 @@ class Users(AbstractBaseUser, PermissionsMixin):
         return self.email
     
     def get_absolute_url(self):
-        return reverse("profile", kwargs={"slug": self.slug})
+        return reverse("profile", kwargs={"slug": self.slug, "id": self.id})
     
     def get_absolute_url_for_update(self):
-        return reverse("update_profile", kwargs={"slug": self.slug})
+        return reverse("update_profile", kwargs={"slug": self.slug, "id": self.id})
 
     def save(self, *args, **kwargs):
         today = date.today()

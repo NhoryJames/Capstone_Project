@@ -26,10 +26,10 @@
     {% block css %} {% endblock %}
 
 </head>
-<body style="background-color: #E9E9E9;">
+<body>
     {% block image %} {% endblock %}
     <div>
-        <nav class="py-5 px-20 flex justify-between items-center" style="font-family: 'Imprima', sans-serif; background-color: #f89651;">
+        <nav class="py-5 px-20 flex justify-between items-center bg-transparents" style="font-family: 'Imprima', sans-serif;">
             <a href="/" class="relative text-xl font-semibold">Adopt A Friend</a>
             <div class="relative flex space-x-10">
                 <a href="{% url 'index' %}" class="py-2 text-base font font-semibold hover:text-white">Home</a>
@@ -39,13 +39,13 @@
                 {% if user.is_authenticated %}
                 <a href="{{user.get_absolute_url}}" class="py-2 text-base font font-semibold hover:text-white">Profile</a>
                 <a href="{% url 'logout' %}">
-                <button class="font-semibold text-white px-9 py-2 rounded-md bg-amber-900 hover:bg-yellow-800">
+                <button class="shadow-lg transition ease-in-out delay-150 font-semibold text-white px-9 py-2 rounded-md hover:-translate-y-1 hover:scale-110 duration-300 bg-amber-900">
                     Logout
                 </button>
                 </a>
                 {% else %}
                 <a href="{% url 'login' %}">
-                    <button class="transition ease-in-out delay-150 font-semibold text-white px-9 py-2 rounded-md bg-amber-900 hover:bg-yellow-800 hover:-translate-y-1 hover:scale-110 duration-300">
+                    <button class="shadow-lg transition ease-in-out delay-150 font-semibold text-white px-9 py-2 rounded-md hover:-translate-y-1 hover:scale-110 duration-300 bg-amber-900">
                         Login
                     </button>
                 </a>

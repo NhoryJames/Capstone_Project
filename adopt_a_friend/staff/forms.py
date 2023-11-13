@@ -1,5 +1,8 @@
 from django import forms
 from pets.models import *
+from donation.models import *
+from django.forms import inlineformset_factory
+from django.core.exceptions import ValidationError
 
 class PetForm(forms.ModelForm):
     class Meta:
@@ -65,11 +68,46 @@ class PetMedicalForm(forms.ModelForm):
         }
 
         labels = {
-            'petWeight' : 'Weight (KG):',
+            'petWeight' : 'Weight (in KG):',
             'isVaccinated' : 'Is the pet vaccinated? (check the box if yes):',
             'isNeutered_or_Spayed' :  'Is the pet spayed/neutered? (check the box if yes):',
             'healthCondition' :  'What is the current health condition of the pet?',
             'disease' : 'Disease (if any):',
             'comment' : 'Vet Comment:'
         }
+
+class PetImageForm(forms.ModelForm):
+    class Meta:
+        model = PetImage
+        fields = (
+            'petImage',
+        )
+
+        labels = {
+            'petImage' : 'Pet Image'
+        }
+
+PetImageFormset = inlineformset_factory(Pet, PetImage, form=PetImageForm, extra=5, can_delete=False, max_num=5)
+
+# ------------------------------ CAMPAIGN FORMS ----------------------------- #
+
+class CampaignForm(forms.ModelForm):
+    class Meta:
+        model = FundraisingCampaign
+        exclude = ['campaignId']
+
+        widgets = {
+            'campaignName' : forms.TextInput(attrs={'class': 'mt-2 border-2 border-black w-full px-6 py-3 mb-2 rounded-lg font-medium'}), 
+            'campaignDescription' : forms.Textarea(attrs={'class': 'mt-2 border-2 border-black w-full px-6 py-3 mb-2 rounded-lg font-medium'}), 
+            'campaignGoal' : forms.NumberInput(attrs={'step': '0.01', 'min': '0', 'class': 'mt-2 border-2 border-black w-full px-6 py-3 mb-2 rounded-lg font-medium'}),
+        }
+
+        labels = {
+            'campaignName' : 'Campaign Name:', 
+            'campaignDescription' : 'Campaign Description:',
+            'campaignGoal' : 'Campaign Goal:',
+            'campaignImage': 'Campaign Image:',
+        }
+
+
 

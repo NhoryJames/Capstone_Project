@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Users
+from .models import *
 from django.contrib.auth import login as auth_login, logout
 from .forms import UsersForm, LoginForm, ProfilePictureUpdateForm, UserUpdateForm, PreferenceForm, PersonalityPreferenceFormSet
 from verify_email.email_handler import send_verification_email
@@ -62,26 +62,33 @@ def sent_email(request):
     return render(request, 'users/sent_email.html')
 
 @login_required
-def profile(request, slug):
+def profile(request, slug, id):
     user = get_object_or_404(Users, slug=slug)
-    return render(request, 'users/profile.html', {'user': user})
+    adopters = Users.objects.get(pk=id)
+    preference = Preference.objects.get(adopter=adopters)
+    personality_preference = PersonalityPreference.objects.filter(preferenceId=preference)
+
+    context = {
+        'user': user,
+        'preference': preference,
+        'personality_preference': personality_preference
+    }
+
+    return render(request, 'users/profile.html', context)
 
 @login_required
 def update_profile(request, slug):
     user = get_object_or_404(Users, slug=slug)
     
+    
     if request.method =='POST':
-        update_user = UserUpdateForm(request.POST, 
-                                     instance=request.user)
-        update_profile = ProfilePictureUpdateForm(request.POST, 
-                                                  request.FILES, 
-                                                  instance=request.user.profile)
+        update_user = UserUpdateForm(request.POST, instance=request.user)
+        update_profile = ProfilePictureUpdateForm(request.POST, request.FILES, instance=request.user.profile)
         
         if update_user.is_valid() and update_profile.is_valid():
             update_user.save()
             update_profile.save()
-            messages.success(request, f'Your account has been updated!')
-            return redirect('profile', slug=user.slug)
+            return redirect('profile', slug=user.slug, id=user.id)
         
     else:
         update_user = UserUpdateForm(instance=request.user)
@@ -91,7 +98,7 @@ def update_profile(request, slug):
     context = {
         'update_user': update_user,
         'update_profile': update_profile,
-        'user': user
+        'user': user,
     }
 
     return render(request, 'users/update_profile.html', context)
