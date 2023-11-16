@@ -45,6 +45,8 @@ class PetForm(forms.ModelForm):
             'petDescription' : 'Pet Description:',
             'isTrained' : 'Is the pet trained? (check the box if yes):'
         }
+    
+    # PUT VALIDATIONS HERE
 
 class PetMedicalForm(forms.ModelForm):
     class Meta:
@@ -75,6 +77,8 @@ class PetMedicalForm(forms.ModelForm):
             'disease' : 'Disease (if any):',
             'comment' : 'Vet Comment:'
         }
+    
+     # PUT VALIDATIONS HERE
 
 class PetImageForm(forms.ModelForm):
     class Meta:
@@ -86,6 +90,8 @@ class PetImageForm(forms.ModelForm):
         labels = {
             'petImage' : 'Pet Image'
         }
+    
+     # PUT VALIDATIONS HERE
 
 PetImageFormset = inlineformset_factory(Pet, PetImage, form=PetImageForm, extra=5, can_delete=False, max_num=5)
 
@@ -108,6 +114,8 @@ class CampaignForm(forms.ModelForm):
             'campaignGoal' : 'Campaign Goal:',
             'campaignImage': 'Campaign Image:',
         }
+    
+     # PUT VALIDATIONS HERE
 
 
 

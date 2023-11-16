@@ -152,7 +152,7 @@ class Users(AbstractBaseUser, PermissionsMixin):
         self.slug = slugify(f"{self.first_name} {self.last_name}")
         super(Users, self).save(*args, **kwargs)
 
-        
+        # CURRENT/GOAL 1000/10000
 
 class Profile(models.Model):
     user = models.OneToOneField(Users, on_delete=models.CASCADE)

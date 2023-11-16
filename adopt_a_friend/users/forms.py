@@ -17,6 +17,7 @@ class UsersForm(UserCreationForm):
         help_text="Please enter the same password as above, for verification."
     )
     
+    #VALIDATION FOR CONTACT NUM
     def clean_contact_num(self):
         value = self.cleaned_data['contact_num']
 
@@ -27,6 +28,7 @@ class UsersForm(UserCreationForm):
 
         return value
 
+    #VALIDATION FOR FIRST NAME
     def clean_first_name(self):
         value = self.cleaned_data['first_name']
 
@@ -35,6 +37,7 @@ class UsersForm(UserCreationForm):
 
         return value
 
+    #VALIDATION FOR LAST NAME
     def clean_last_name(self):
         value = self.cleaned_data['last_name']
 
@@ -43,6 +46,8 @@ class UsersForm(UserCreationForm):
 
         return value
     
+     #PUT VALIDATIONS HERE
+
     class Meta:
         model = Users
         fields = (
@@ -61,7 +66,7 @@ class UsersForm(UserCreationForm):
             'last_name' : forms.TextInput(attrs={'class': 'mt-2 border-2 border-black w-full px-6 py-3 mb-2 rounded-lg font-medium'}),   
             'gender' : forms.Select(attrs={'class': 'mt-2 border-2 border-black w-full px-6 py-3 mb-2 rounded-lg font-medium'}),
             'home_address' : forms.TextInput(attrs={'class': 'mt-2 border-2 border-black w-full px-6 py-3 mb-2 rounded-lg font-medium'}), 
-            'date_of_birth' : forms.TextInput(attrs={'class': 'mt-2 border-2 border-black w-full px-6 py-3 mb-2 rounded-lg font-medium date-picker'}), 
+            'date_of_birth' : forms.TextInput(attrs={'class': 'mt-2 border-2 border-black w-full px-6 py-3 mb-2 rounded-lg font-medium datepicker'}), 
             'contact_num' : forms.TextInput(attrs={'class': 'mt-2 border-2 border-black w-full px-6 py-3 mb-2 rounded-lg font-medium'}), 
         }
 
