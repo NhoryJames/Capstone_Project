@@ -16,7 +16,8 @@ COLOR_CHOICES = (
     ('Orange', 'Orange'),
     ('Cream', 'Cream'),
     ('Bi-color', 'Bi-color'),
-    ('Tricolor', 'Tricolor')
+    ('Tricolor', 'Tricolor'),
+    ('Any', 'Any'),
 )
 
 PERSONALITY_CHOICES = (
@@ -45,19 +46,35 @@ PERSONALITY_CHOICES = (
 GENDER_CHOICES = (
     ('Male', 'Male'),
     ('Female', 'Female'),
-    ('Other', 'Other')
+    ('Others', 'Others')
+)
+
+PET_GENDER_CHOICES = (
+    ('Male', 'Male'),
+    ('Female', 'Female'),
+    ('Any', 'Any'),
 )
 
 ANIMAL_TYPES_CHOICES = (
     ('Dog', 'Dog'),
-    ('Cat', 'Cat')
+    ('Cat', 'Cat'),
+    ('Any', 'Any'),
+)
+
+PET_AGE_CHOICES = (
+    ('Puppy', 'Puppy'),
+    ('Young', 'Young'),
+    ('Adult', 'Adult'),
+    ('Senior', 'Senior'),
+    ('Any', 'Any'),
 )
 
 PET_SIZE_CHOICES = (
     ('Extra Small', 'Extra Small'),
     ('Small', 'Small'),
     ('Medium', 'Medium'),
-    ('Large', 'Large')
+    ('Large', 'Large'),
+    ('Any', 'Any'),
 )
 
 HEALTH_CONDITIONS = (
@@ -69,6 +86,7 @@ HEALTH_CONDITIONS = (
     ('Injured', 'Injured'),
     ('Behavioral Issues', 'Behavioral Issues'),
     ('Senior Care', 'Senior Care'),
+    ("I don't mind", "I don't mind"),
 )
 
 GENDER_CHOICES = (
@@ -112,7 +130,6 @@ class CustomAccountManager(BaseUserManager):
             raise ValueError('Superuser must be assigned to is_superuser=True')
 
         return self.create_user(email, password, first_name, last_name, gender, age, date_of_birth, home_address, contact_num, **other_fields)
-
 
 class Users(AbstractBaseUser, PermissionsMixin):
      
@@ -175,16 +192,12 @@ class Preference(models.Model):
     
     preferenceId = models.CharField(max_length=10, default=generate_preference_key, primary_key=True, unique=True)
     adopter = models.ForeignKey(Users, null=False, blank=False, on_delete=models.CASCADE)
-    preferredAnimalType = models.CharField(max_length=20, choices=ANIMAL_TYPES_CHOICES, null=False, blank=False)
-    preferredBreed = models.CharField(max_length=50, null=False, blank=False)
-    preferredAge = models.IntegerField(null=False, blank=False)
+    preferredAnimalType = models.CharField(max_length=20, choices=ANIMAL_TYPES_CHOICES, null=False, blank=False, default="")
+    preferredAge = models.CharField(max_length=20, choices=PET_AGE_CHOICES, null=False, blank=False, default="")
     preferredGender = models.CharField(max_length=20, choices=GENDER_CHOICES, null=False, blank=False, default="")
-    preferredSize = models.CharField(max_length=20, choices=PET_SIZE_CHOICES, null=False, blank=False)
+    preferredSize = models.CharField(max_length=20, choices=PET_SIZE_CHOICES, null=False, blank=False, default="")
     preferredColor = models.CharField(max_length=20, choices=COLOR_CHOICES, null=False, blank=False, default="")
     preferredSpayedorNeutered = models.BooleanField()
-    preferredHealthCondition = models.CharField(max_length=30, null=False, choices=HEALTH_CONDITIONS)
-    
-class PersonalityPreference(models.Model):
-
-    preferenceId = models.ForeignKey(Preference, null=False, blank=False, on_delete=models.CASCADE)
+    preferredHealthCondition = models.CharField(max_length=30, null=False, choices=HEALTH_CONDITIONS, default="")
     preferredPersonality = models.CharField(max_length=50, choices=PERSONALITY_CHOICES, blank=False, null=False, default="")
+

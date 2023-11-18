@@ -46,9 +46,17 @@ GENDER_CHOICES = (
     ('Other', 'Other')
 )
 
+PET_AGE_CHOICES = (
+    ('Puppy/Kitten', 'Puppy/Kitten'),
+    ('Young', 'Young'),
+    ('Adult', 'Adult'),
+    ('Senior', 'Senior')
+)
+
 ANIMAL_TYPES_CHOICES = (
     ('Dog', 'Dog'),
-    ('Cat', 'Cat')
+    ('Cat', 'Cat'),
+    ('Others', 'Others')
 )
 
 PET_SIZE_CHOICES = (
@@ -86,26 +94,32 @@ def generate_med_key():
         new_id = 1
     return f'MED{str(new_id).zfill(4)}'
 
+def generate_application_key():
+    last_record = Application.objects.order_by('-applicationId').first()
+    if last_record is not None:
+        last_id = int(last_record.applicationId[3:])  # Extract the numeric part of the petId
+        new_id = last_id + 1
+    else:
+        new_id = 1
+    return f'APP{str(new_id).zfill(4)}'
+
 class Pet(models.Model):
     petId = models.CharField(max_length=10, default=generate_pet_key, primary_key=True, unique=True)
     petName = models.CharField(max_length=50, null=False, blank=False, unique=True)
     animalType = models.CharField(max_length=20, choices=ANIMAL_TYPES_CHOICES, null=False, blank=False)
     breed = models.CharField(max_length=50, null=False, blank=False)
-    petAge = models.IntegerField(null=False, blank=False)
-    petGender = models.CharField(max_length=20, choices=GENDER_CHOICES, null=False, blank=False, default="Others")
+    petAge = models.CharField(max_length=50, null=False, blank=False, choices=PET_AGE_CHOICES)
+    petGender = models.CharField(max_length=20, choices=GENDER_CHOICES, null=False, blank=False, default="")
     petSize = models.CharField(max_length=20, choices=PET_SIZE_CHOICES, null=False, blank=False)
-    petColor = models.CharField(max_length=20, choices=COLOR_CHOICES, null=False, blank=False, default="Brown")
+    petColor = models.CharField(max_length=20, choices=COLOR_CHOICES, null=False, blank=False, default="")
     petDescription = models.TextField(max_length=500, blank=True, null=True)
-    petPersonality = models.CharField(max_length=50, choices=PERSONALITY_CHOICES, blank=False, null=False, default="Intelligent")
+    petPersonality = models.CharField(max_length=50, choices=PERSONALITY_CHOICES, blank=False, null=False, default="")
     dateAcquired = models.DateField(blank=False, null=False, default=timezone.now)
     isTrained = models.BooleanField(default=False)
     slug = models.SlugField(unique=True, blank=True)
-
-    def __str__(self):
-        return self.petName
     
     def get_absolute_pet_url(self):
-        return reverse("pet_profile", kwargs={"slug": self.slug})
+        return reverse("pet_profile", kwargs={"slug": self.slug, "petId": str(self.petId)})
     
     def get_absolute_pet_url_for_update(self):
         return reverse("edit_pet", kwargs={"slug": self.slug})
@@ -115,25 +129,51 @@ class Pet(models.Model):
         super(Pet, self).save(*args, **kwargs)
 
 class PetImage(models.Model):
-    petId = models.ForeignKey(Pet, null=False, blank=False, on_delete=models.CASCADE)
+    petId = models.ForeignKey('Pet', null=False, blank=False, on_delete=models.CASCADE)
     petImage = models.ImageField(upload_to='static/pet_pics')
-    
-    # def save(self, *args, **kwargs):
-    #     super().save(*args, **kwargs)
 
-    #     img = Image.open(self.petImage.path)
+    def save(self, *args, **kwargs):
+        try:
+            this = PetImage.objects.get(id=self.id)
+            if this.petImage != self.petImage:
+                this.petImage.delete(save=False)
+        except PetImage.DoesNotExist:
+            pass
 
-    #     if img.height > 224 or img.width > 224:
-    #         output_size = (224,224)
-    #         img.thumbnail(output_size)
-    #         img.save(self.petImage.path)
+        super(PetImage, self).save(*args, **kwargs)
 
 class PetMedical(models.Model):
     petId = models.OneToOneField(Pet, null=False, blank=False, on_delete=models.CASCADE)
-    petWeight = models.CharField(max_length=30, null=False, default='0')
+    petWeight = models.IntegerField(blank=False, null=False)
     isVaccinated = models.BooleanField()
     isNeutered_or_Spayed = models.BooleanField()
     healthCondition = models.CharField(max_length=30, null=False, choices=HEALTH_CONDITIONS)
     disease = models.CharField(max_length=100, null=False)
     comment = models.TextField(max_length=500, blank=True, null=True)
+
+class Application(models.Model):
+    applicationId = models.CharField(max_length=10, default=generate_application_key, primary_key=True, unique=True)
+    pet = models.ForeignKey(Pet, null=False, on_delete=models.CASCADE)
+    user = models.ForeignKey(Users, null=False, on_delete=models.CASCADE)
+    adopteeFirstName = models.CharField(max_length=50, null=False, blank=False)
+    adopteeLastName = models.CharField(max_length=50, null=False, blank=False)
+    adopteeHomeAddress = models.CharField(max_length=300, null=False, blank=False)
+    adopteeContactNum = models.CharField(max_length=15, null=False, blank=False)
+    status = models.CharField(max_length=300, null=False, blank=False)
+    staffComment = models.TextField(max_length=300, null=False, blank=True, default='')
+    interviewDate = models.DateField(null=True)
+    inPersonVisitDate = models.DateField(null=True)
     
+
+class HousePicture(models.Model):
+    applicationId = models.ForeignKey(Application, null=False, on_delete=models.CASCADE)
+    housePicture = models.ImageField(blank=False, null=False, upload_to='static/application_pics')
+
+class IdPicture(models.Model):
+    applicationId = models.ForeignKey(Application, null=False, on_delete=models.CASCADE)
+    validIdPicture = models.ImageField(blank=False, null=False, upload_to='static/application_pics')
+
+class CondoAgreement(models.Model):
+    applicationId = models.ForeignKey(Application, null=False, on_delete=models.CASCADE)
+    condoAgreement = models.FileField(upload_to='static/application_files', null=True, blank=True)
+

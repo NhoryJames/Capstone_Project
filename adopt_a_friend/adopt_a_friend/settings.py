@@ -40,9 +40,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     "verify_email.apps.VerifyEmailConfig",
     'tailwind',
-    'theme',
     'django_browser_reload',
     'main',
+    'theme',
     'users',
     'videochat',
     'pets',
@@ -161,8 +161,6 @@ INTERNAL_IPS = [
 NPM_BIN_PATH = r"C:\Program Files\nodejs\npm.cmd"
 
 MAX_RETRIES = 6
-
-
 
 HTML_MESSAGE_TEMPLATE = "users/email.html"
 

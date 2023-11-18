@@ -2,6 +2,8 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('pet_profile/', views.pet_profile, name='pet_profile'),
-    path('adoptme/', views.pet_page, name='pet_page')
+    path('pet_profile/<str:slug>-<str:petId>/', views.pet_profile, name='pet_profile'),
+    path('adoptme/', views.pet_page, name='pet_page'),
+    path('application/<str:slug>/', views.application, name='application'),
+    path('submitted/', views.submitted, name='submitted')
 ]

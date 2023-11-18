@@ -24,7 +24,7 @@ class PetForm(forms.ModelForm):
             'petName' : forms.TextInput(attrs={'class': 'mt-2 border-2 border-black w-full px-6 py-3 mb-2 rounded-lg font-medium'}), 
             'animalType' : forms.Select(attrs={'class': 'mt-2 border-2 border-black w-full px-6 py-3 mb-2 rounded-lg font-medium'}), 
             'breed' : forms.TextInput(attrs={'class': 'mt-2 border-2 border-black w-full px-6 py-3 mb-2 rounded-lg font-medium'}), 
-            'petAge' : forms.NumberInput(attrs={'class': 'mt-2 border-2 border-black w-full px-6 py-3 mb-2 rounded-lg font-medium'}),
+            'petAge' : forms.Select(attrs={'class': 'mt-2 border-2 border-black w-full px-6 py-3 mb-2 rounded-lg font-medium'}),
             'petGender' : forms.Select(attrs={'class': 'mt-2 border-2 border-black w-full px-6 py-3 mb-2 rounded-lg font-medium'}), 
             'petSize' : forms.Select(attrs={'class': 'mt-2 border-2 border-black w-full px-6 py-3 mb-2 rounded-lg font-medium'}), 
             'petPersonality': forms.Select(attrs={'class': 'mt-2 border-2 border-black w-full px-6 py-3 mb-2 rounded-lg font-medium'}), 
@@ -61,7 +61,7 @@ class PetMedicalForm(forms.ModelForm):
         )
     
         widgets = {
-            'petWeight' : forms.TextInput(attrs={'class': 'mt-2 border-2 border-black w-full px-6 py-3 mb-2 rounded-lg font-medium'}), 
+            'petWeight' : forms.NumberInput(attrs={'class': 'mt-2 border-2 border-black w-full px-6 py-3 mb-2 rounded-lg font-medium'}), 
             'isVaccinated' : forms.CheckboxInput(attrs={'class' : 'ml-4'}),
             'isNeutered_or_Spayed' : forms.CheckboxInput(attrs={'class' : 'ml-4'}),
             'healthCondition' : forms.Select(attrs={'class': 'mt-2 border-2 border-black w-full px-6 py-3 mb-2 rounded-lg font-medium'}), 
@@ -93,7 +93,7 @@ class PetImageForm(forms.ModelForm):
     
      # PUT VALIDATIONS HERE
 
-PetImageFormset = inlineformset_factory(Pet, PetImage, form=PetImageForm, extra=5, can_delete=False, max_num=5)
+PetImageFormset = inlineformset_factory(Pet, PetImage, form=PetImageForm, extra=3, can_delete=False, max_num=3)
 
 # ------------------------------ CAMPAIGN FORMS ----------------------------- #
 

@@ -1,12 +1,14 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import *
 from django.contrib.auth import login as auth_login, logout
-from .forms import UsersForm, LoginForm, ProfilePictureUpdateForm, UserUpdateForm, PreferenceForm, PersonalityPreferenceFormSet
+from .forms import UsersForm, LoginForm, ProfilePictureUpdateForm, UserUpdateForm, PreferenceForm
 from verify_email.email_handler import send_verification_email
 from django.contrib.auth.decorators import login_required
 from .decorators import unauthenticated_user
 from django.contrib import messages
 from django.urls import reverse
+import os
+from django.conf import settings
 
 # Create your views here.
 
@@ -15,9 +17,8 @@ def create_user(request):
     if request.method == 'POST':
         form = UsersForm(request.POST)
         preference_form = PreferenceForm(request.POST)
-        personality_preference_formset = PersonalityPreferenceFormSet(request.POST)
 
-        if form.is_valid() and preference_form.is_valid() and personality_preference_formset.is_valid():
+        if form.is_valid() and preference_form.is_valid():
             inactive_user = send_verification_email(request, form)
             user = form.save()
             
@@ -25,21 +26,14 @@ def create_user(request):
             preference.adopter = user
             preference.save()
 
-            for personality_preference_form in personality_preference_formset:
-                personality_preference = personality_preference_form.save(commit=False)
-                personality_preference.preferenceId = preference
-                personality_preference.save()
-
             return redirect('/sent_email/')
     else:
         form = UsersForm()
         preference_form = PreferenceForm()
-        personality_preference_formset = PersonalityPreferenceFormSet()
 
     return render(request, 'users/signup.html', {
         'form': form, 
         'preference_form': preference_form, 
-        'personality_preference_formset': personality_preference_formset
         })
 
 @unauthenticated_user
@@ -66,12 +60,10 @@ def profile(request, slug, id):
     user = get_object_or_404(Users, slug=slug)
     adopters = Users.objects.get(pk=id)
     preference = Preference.objects.get(adopter=adopters)
-    personality_preference = PersonalityPreference.objects.filter(preferenceId=preference)
 
     context = {
         'user': user,
         'preference': preference,
-        'personality_preference': personality_preference
     }
 
     return render(request, 'users/profile.html', context)
@@ -80,24 +72,31 @@ def profile(request, slug, id):
 def update_profile(request, slug):
     user = get_object_or_404(Users, slug=slug)
     
-    
-    if request.method =='POST':
-        update_user = UserUpdateForm(request.POST, instance=request.user)
-        update_profile = ProfilePictureUpdateForm(request.POST, request.FILES, instance=request.user.profile)
+    if request.method == 'POST':
+        update_user_form = UserUpdateForm(request.POST, instance=request.user)
+        update_profile_form = ProfilePictureUpdateForm(request.POST, request.FILES, instance=request.user.profile)
         
-        if update_user.is_valid() and update_profile.is_valid():
-            update_user.save()
-            update_profile.save()
-            return redirect('profile', slug=user.slug, id=user.id)
+        if update_user_form.is_valid() and update_profile_form.is_valid():
+            # Delete the previous profile picture if it exists
+            previous_picture = user.profile.image
+            if previous_picture:
+                full_path = os.path.join(settings.MEDIA_ROOT, str(previous_picture))
+                if os.path.exists(full_path):
+                    os.remove(full_path)
+
+            update_user_form.save()
+            update_profile_form.save()
+            
+            messages.success(request, 'Profile updated successfully!')
+            return redirect('profile', slug=user.slug)  # Assuming 'profile' is the URL name for the user's profile page
         
     else:
-        update_user = UserUpdateForm(instance=request.user)
-        update_profile = ProfilePictureUpdateForm(instance=request.user.profile)
+        update_user_form = UserUpdateForm(instance=request.user)
+        update_profile_form = ProfilePictureUpdateForm(instance=request.user.profile)
     
-
     context = {
-        'update_user': update_user,
-        'update_profile': update_profile,
+        'update_user_form': update_user_form,
+        'update_profile_form': update_profile_form,
         'user': user,
     }
 

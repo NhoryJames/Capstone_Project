@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import inlineformset_factory
-from .models import Users, Profile, Preference, PersonalityPreference
+from .models import Users, Profile, Preference
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.core.exceptions import ValidationError
 
@@ -129,12 +129,13 @@ class PreferenceForm(forms.ModelForm):
         widgets = {
             'preferredAnimalType' : forms.Select(attrs={'class': 'mt-2 border-2 border-black w-full px-6 py-3 mb-2 rounded-lg font-medium'}), 
             'preferredBreed' : forms.TextInput(attrs={'class': 'mt-2 border-2 border-black w-full px-6 py-3 mb-2 rounded-lg font-medium'}), 
-            'preferredAge' : forms.NumberInput(attrs={'class': 'mt-2 border-2 border-black w-full px-6 py-3 mb-2 rounded-lg font-medium'}),
+            'preferredAge' : forms.Select(attrs={'class': 'mt-2 border-2 border-black w-full px-6 py-3 mb-2 rounded-lg font-medium'}),
             'preferredGender' : forms.Select(attrs={'class': 'mt-2 border-2 border-black w-full px-6 py-3 mb-2 rounded-lg font-medium'}), 
             'preferredSize' : forms.Select(attrs={'class': 'mt-2 border-2 border-black w-full px-6 py-3 mb-2 rounded-lg font-medium'}),             
             'preferredColor': forms.Select(attrs={'class': 'mt-2 border-2 border-black w-full px-6 py-3 mb-2 rounded-lg font-medium'}), 
             'preferredSpayedorNeutered' : forms.CheckboxInput(attrs={'class' : 'ml-4'}),
             'preferredHealthCondition' : forms.Select(attrs={'class': 'mt-2 border-2 border-black w-full px-6 py-3 mb-2 rounded-lg font-medium'}), 
+            'preferredPersonality': forms.Select(attrs={'class': 'mt-2 border-2 border-black w-full px-6 py-3 mb-2 rounded-lg font-medium'}), 
         }
 
         labels = {
@@ -146,15 +147,5 @@ class PreferenceForm(forms.ModelForm):
             'preferredColor': 'Preferred Color of the Pet:',
             'preferredSpayedorNeutered': 'Preference for a Spayed or Neutered Pet:',
             'preferredHealthCondition': 'Preferred Health Condition of the Pet:',
+            'preferredPersonality': 'Preferred Pet Personality:'
         }
-
-class PersonalityPreferenceForm(forms.ModelForm):
-    class Meta:
-        model = Preference
-        exclude = ['preferenceId']
-
-        widgets = {
-            'preferredPersonality': forms.Select(attrs={'class': 'mt-2 border-2 border-black w-full px-6 py-3 mb-2 rounded-lg font-medium'}), 
-        }
-
-PersonalityPreferenceFormSet = inlineformset_factory(Preference, PersonalityPreference, form=PersonalityPreferenceForm, extra=3, can_delete=False)

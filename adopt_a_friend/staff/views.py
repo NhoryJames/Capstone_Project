@@ -7,16 +7,33 @@ from donation.models import *
 from django.views.decorators.csrf import csrf_protect
 from django.db.models import Q
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-
+from .decorators import staff_required
 
 # Create your views here.
 
+@staff_required
 def staff_dashboard(request):
     return render(request, 'staff/staff_dashboard.html')
 
+@staff_required
 def staff_application_dashboard(request):
-    return render(request, 'staff/staff_application_dashboard.html')
+    application = Application.objects.all()
+    total_application_count = application.count()
+    query = request.GET.get('q')
 
+    if query:
+        # Filter campaigns based on the search query
+        application = application.filter(
+            Q(campaignName__icontains=query) |
+            Q(campaignId__icontains=query)
+            # Add more fields as needed
+            )
+    
+    return render(request, 'staff/staff_application_dashboard.html', {
+        'application':application,
+        'total_application_count': total_application_count})
+
+@staff_required
 def staff_campaign_dashboard(request):
     fundrasing_campaigns = FundraisingCampaign.objects.all()
     total_campaign_count = fundrasing_campaigns.count()
@@ -46,6 +63,7 @@ def staff_campaign_dashboard(request):
         'fundrasing_campaigns':fundrasing_campaigns,
         'total_campaign_count': total_campaign_count})
 
+@staff_required
 def staff_pet_dashboard(request):
     query = request.GET.get('q')
 
@@ -75,16 +93,17 @@ def staff_pet_dashboard(request):
 
     return render(request, 'staff/staff_pet_dashboard.html', {'pets': pets, 'total_pets_count': total_pets_count})
 
+@staff_required
 def add_pet(request):
     if request.method == 'POST':
         pet_form = PetForm(request.POST)
         pet_medical_form = PetMedicalForm(request.POST)
-        pet_image_formset = PetImageFormset(request.POST)
+        pet_image_formset = PetImageFormset(request.POST, request.FILES)
 
         if pet_form.is_valid() and pet_medical_form.is_valid() and pet_image_formset.is_valid():
             pet_instance = pet_form.save()
+            
             petmedical = pet_medical_form.save(commit=False)
-           
             petmedical.petId = pet_instance
             petmedical.save()
 
@@ -105,6 +124,7 @@ def add_pet(request):
                    'pet_medical_form': pet_medical_form,
                    'pet_image_formset': pet_image_formset})
 
+@staff_required
 def edit_pet(request, slug):
     pet = get_object_or_404(Pet, slug=slug)
     
@@ -132,6 +152,7 @@ def edit_pet(request, slug):
         'ImageFormset': ImageFormset,
     })
 
+@staff_required
 def delete_pet(request, pet_id):
     pet = get_object_or_404(Pet, petId=pet_id)
 
@@ -144,6 +165,7 @@ def delete_pet(request, pet_id):
 
     return JsonResponse({'message': 'Invalid request method.'}, status=400)
 
+@staff_required
 def add_campaign(request):
     if request.method == 'POST':
         form = CampaignForm(request.POST, request.FILES)
@@ -155,6 +177,7 @@ def add_campaign(request):
         form = CampaignForm()
     return render(request, 'staff/add_campaign.html', {'form': form})
 
+@staff_required
 def edit_campaign(request, campaign_id):
     campaign = get_object_or_404(FundraisingCampaign, campaignId=campaign_id)
 
@@ -168,6 +191,7 @@ def edit_campaign(request, campaign_id):
 
     return render(request, 'staff/edit_campaign.html', {'form': form, 'campaign':campaign})
 
+@staff_required
 def delete_campaign(request, campaign_id):
     campaign = get_object_or_404(FundraisingCampaign, campaignId=campaign_id)
 
@@ -180,6 +204,8 @@ def delete_campaign(request, campaign_id):
 
     return JsonResponse({'message': 'Invalid request method.'}, status=400)
 
+@staff_required
 def review_application(request):
+    
     return render(request, 'staff/review_application.html')
 
