@@ -190,7 +190,7 @@ def edit_campaign(request, campaign_id):
     campaign = get_object_or_404(FundraisingCampaign, campaignId=campaign_id)
 
     if request.method == 'POST':
-        form = CampaignForm(request.POST, instance=campaign)
+        form = CampaignForm(request.POST, request.FILES, instance=campaign)
         if form.is_valid():
             form.save()
             return redirect('staff_campaign_dashboard')

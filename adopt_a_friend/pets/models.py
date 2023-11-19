@@ -164,7 +164,6 @@ class Application(models.Model):
     interviewDate = models.DateField(null=True)
     inPersonVisitDate = models.DateField(null=True)
     
-
 class HousePicture(models.Model):
     applicationId = models.ForeignKey(Application, null=False, on_delete=models.CASCADE)
     housePicture = models.ImageField(blank=False, null=False, upload_to='static/application_pics')

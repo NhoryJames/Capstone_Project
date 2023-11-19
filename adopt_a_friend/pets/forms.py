@@ -36,6 +36,12 @@ class HousePictureForm(forms.ModelForm):
             'housePicture' : 'House Picture ',
         }
 
+    def clean_housePicture(self):
+        house_picture = self.cleaned_data.get('housePicture')
+        if not house_picture:
+            raise ValidationError('Please submit at least one house picture.')
+        return house_picture
+
 class IdPictureForm(forms.ModelForm):
     class Meta:
         model = IdPicture
@@ -44,6 +50,12 @@ class IdPictureForm(forms.ModelForm):
         labels = {
             'validIdPicture' : 'Valid ID ',
         }
+    
+    def clean_validIdPicture(self):
+        id_picture = self.cleaned_data.get('validIdPicture')
+        if not id_picture:
+            raise ValidationError('Please submit at least one valid ID picture.')
+        return id_picture
 
 class CondoAgreementForm(forms.ModelForm):
     class Meta:

@@ -1,4 +1,5 @@
 {% extends 'main/base.html' %}
+{% load social_share %}
 
 {% block title %} {{pet.petName}} {% endblock %}
 
@@ -36,7 +37,13 @@
 <div class="mx-56 mt-12 mb-14" style="font-family: 'Imprima';">
     <div class="grid grid-cols-6 gap-x-4 gap-y-6">
         <div class="bg-white rounded-lg col-span-4 shadow-lg px-10 pt-10 pb-4">
-            <h1 class="text-5xl font-bold">{{pet.petName}}</h1>
+            <div class="flex justify-between items-center">
+                <h1 class="text-5xl font-bold">{{pet.petName}}</h1>
+                {% post_to_facebook object_or_url "Post to Facebook!" %}
+                <!-- <a href="">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-9 h-9" viewBox="0 0 24 24"><g transform="translate(24 0) scale(-1 1)"><path fill="currentColor" d="M18 9a3 3 0 1 0-2.977-2.63l-6.94 3.47a3 3 0 1 0 0 4.319l6.94 3.47a3 3 0 1 0 .895-1.789l-6.94-3.47a3.03 3.03 0 0 0 0-.74l6.94-3.47C16.456 8.68 17.19 9 18 9Z"/></g></svg>
+                </a> -->
+            </div>
             <div class="flex py-4">
                 <p class="text-lg">{{pet.animalType}}</p> <p class="px-2">·</p> <p class="text-lg">{{pet.breed}}</p> <p class="px-2">·</p> <p class="text-lg">{{pet.petAge}}</p>  
                 {% if pet.isTrained %}
@@ -47,8 +54,28 @@
             <h1 class="text-2xl pt-4"> About </h1>
             <p class="py-4 text-justify">{{pet.petDescription}}</p>
             <p class="border-b-2 border-gray-300"></p></p>
-            <div class="flex my-4">
-
+            <h1 class="text-2xl pt-4">Health</h1>
+            <div class="py-4 grid grid-cols-2 gap-y-3">
+                <div>
+                    <p class="text-lg">Health Condition:</p>
+                    <p>{{medical.healthCondition}}</p>
+                </div>
+                <div>
+                    <p class="text-lg">Weight:</p>
+                    <p>{{medical.petWeight}}kg</p>
+                </div>
+                <div>
+                    <p class="text-lg">Disease:</p>
+                    <p>{{medical.disease}}</p>
+                </div>
+                <div>
+                    <p class="text-lg">Vaccinated:</p>
+                    <p>{% if medical.isVaccinated %}Yes{% else %}No{% endif %}</p>
+                </div>
+                <div>
+                    <p class="text-lg">Neutered/Spayed:</p>
+                    <p>{% if medical.isNeutered_or_Spayed %}Yes{% else %}No{% endif %}</p>
+                </div>
             </div>
         </div>
         <div class="bg-white rounded-lg col-span-2 shadow-lg px-10 pt-10 pb-4" style="background-color: #f89651;">

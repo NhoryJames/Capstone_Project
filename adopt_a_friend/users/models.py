@@ -62,7 +62,7 @@ ANIMAL_TYPES_CHOICES = (
 )
 
 PET_AGE_CHOICES = (
-    ('Puppy', 'Puppy'),
+    ('Puppy/Kitten', 'Puppy/Kitten'),
     ('Young', 'Young'),
     ('Adult', 'Adult'),
     ('Senior', 'Senior'),
@@ -200,4 +200,4 @@ class Preference(models.Model):
     preferredSpayedorNeutered = models.BooleanField()
     preferredHealthCondition = models.CharField(max_length=30, null=False, choices=HEALTH_CONDITIONS, default="")
     preferredPersonality = models.CharField(max_length=50, choices=PERSONALITY_CHOICES, blank=False, null=False, default="")
-
+    

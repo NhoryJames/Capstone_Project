@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'staff',
     'recommendation',
     'donation',
+    'django_social_share',
 ]
 
 MIDDLEWARE = [

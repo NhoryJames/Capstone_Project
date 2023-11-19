@@ -3,6 +3,8 @@ from .models import *
 from .forms import *
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
+from .recommendation import recommend_pets
+from users.models import Preference
 
 # Create your views here.
 
@@ -19,9 +21,22 @@ def pet_profile(request, petId, slug):
 
     return render(request, 'pets/pet_profile.html', context)
 
+from .recommendation import recommend_pets
+
 def pet_page(request):
     query = request.GET.get('q')
-    pets = Pet.objects.all()
+    pets = Pet.objects.all().order_by('petId')
+    recommended_pets = []
+
+    if request.user.is_authenticated:
+        try:
+            # Try to get the user's preferences
+            user_pref = Preference.objects.get(adopter=request.user)
+            # Get recommended pets for the authenticated user
+            recommended_pets = recommend_pets(request.user)
+        except Preference.DoesNotExist:
+            # Handle the case where the user has no preferences
+            pass
 
     if query:
         # Filter pets based on the search query
@@ -31,9 +46,7 @@ def pet_page(request):
             Q(breed__icontains=query)
         )
 
-    pets = pets.order_by('petId')
-    
-    return render(request, 'pets/adoptme.html', {'pets': pets})
+    return render(request, 'pets/adoptme.html', {'pets': pets, 'recommended_pets': recommended_pets})
 
 @login_required
 def application(request, slug):
