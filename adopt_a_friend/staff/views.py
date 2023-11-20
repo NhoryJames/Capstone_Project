@@ -8,13 +8,18 @@ from django.views.decorators.csrf import csrf_protect
 from django.db.models import Q
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .decorators import staff_required
-from reportlab.lib.pagesizes import legal, landscape
+from reportlab.lib.pagesizes import legal, landscape, letter
 from reportlab.lib import colors
+from reportlab.pdfgen import canvas
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph
 from io import BytesIO
 from django.http import HttpResponse
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.enums import TA_CENTER, TA_RIGHT
+from PIL import Image
+from django.http import FileResponse
+import io
+
 
 
 # Create your views here.
@@ -213,9 +218,49 @@ def delete_campaign(request, campaign_id):
     return JsonResponse({'message': 'Invalid request method.'}, status=400)
 
 @staff_required
-def review_application(request):
-    
-    return render(request, 'staff/review_application.html')
+def review_application(request, application_id):
+    # Retrieve the application and related details
+    application = get_object_or_404(Application, applicationId=application_id)
+    pet_images = PetImage.objects.filter(petId=application.pet)
+    house_pictures = HousePicture.objects.filter(applicationId=application)
+    id_pictures = IdPicture.objects.filter(applicationId=application)
+    condo_agreement = CondoAgreement.objects.filter(applicationId=application).first()
+
+    # Handle form submission
+    if request.method == 'POST':
+        form = ReviewApplicationForm(request.POST)
+        if form.is_valid():
+            # Update application details based on the form data
+            application.status = form.cleaned_data['status']
+            application.staffComment = form.cleaned_data['staffComment']
+            application.interviewDate = form.cleaned_data['interviewDate']
+            application.interviewTime = form.cleaned_data['interviewTime']
+            application.inPersonVisitDate = form.cleaned_data['inPersonVisitDate']
+            application.inPersonVisitTime = form.cleaned_data['inPersonVisitTime']
+            application.save()
+
+            # Redirect to a success page or the same page
+            return redirect('staff_application_dashboard')
+
+    else:
+        # Display the form for staff to fill in
+        form = ReviewApplicationForm(initial={
+            'status': application.status,
+            'staff_comment': application.staffComment,
+            'interview_date': application.interviewDate,
+            'interview_time': application.interviewTime,
+            'in_person_visit_date': application.inPersonVisitDate,
+            'in_person_visit_time': application.inPersonVisitTime,
+        })
+
+    context = {
+        'application': application,
+        'form': form,
+    }
+
+    return render(request, 'staff/review_application.html', context)
+
+
 
 def generate_pet_data_pdf(request):
     response = HttpResponse(content_type='application/pdf')
@@ -353,3 +398,36 @@ def create_table(data, fields ,title):
     ])
     table.setStyle(style)
     return table
+
+def generate_application_report(request, application_id):
+    # Create a file-like buffer to receive PDF data.
+    buffer = io.BytesIO()
+
+    # Create the PDF object, using the buffer as its "file."
+    p = canvas.Canvas(buffer, pagesize=letter)
+
+    # Load the models
+    application = get_object_or_404(Application, applicationId=application_id)
+
+    # Draw the application details
+    p.drawString(270, 750, f'{application.adopteeFirstName} {application.adopteeLastName}')
+    p.drawString(270, 735, f'{application.applicationId}')
+    # ... add more details as needed
+
+    # Draw the application picture
+    image_path = application.picture.path
+    application_image = Image.open(image_path)
+    application_image = application_image.resize((150, 150))  # Force resize the image
+    p.drawInlineImage(application_image, 70, 610)
+
+    # Move to the next page
+    p.showPage()
+
+    # Close the PDF object cleanly, and we're done.
+    p.save()
+
+    # FileResponse sets the Content-Disposition header so that browsers
+    # present the option to save the file.
+    buffer.seek(0)
+    return FileResponse(buffer, as_attachment=True, filename=f'application_{application_id}.pdf')
+

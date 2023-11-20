@@ -5,6 +5,8 @@ from users.views import *
 from pets.views import *
 from staff.views import *
 from donation.views import *
+from django.conf.urls.static import static
+from django.conf import settings
 
 urlpatterns = [
     path('', index, name='index'),
@@ -17,4 +19,7 @@ urlpatterns = [
     path('', include("pets.urls")),
     path('', include("staff.urls")),
     path('', include("donation.urls")),
-]
+]     
+
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

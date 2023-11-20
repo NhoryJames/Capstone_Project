@@ -128,14 +128,14 @@ class PreferenceForm(forms.ModelForm):
 
         widgets = {
             'preferredAnimalType' : forms.Select(attrs={'class': 'mt-2 border-2 border-black w-full px-6 py-3 mb-2 rounded-lg font-medium'}), 
-            'preferredBreed' : forms.TextInput(attrs={'class': 'mt-2 border-2 border-black w-full px-6 py-3 mb-2 rounded-lg font-medium'}), 
+            'preferredBreed' : forms.Select(attrs={'class': 'mt-2 border-2 border-black w-full px-6 py-3 mb-2 rounded-lg font-medium'}), 
             'preferredAge' : forms.Select(attrs={'class': 'mt-2 border-2 border-black w-full px-6 py-3 mb-2 rounded-lg font-medium'}),
             'preferredGender' : forms.Select(attrs={'class': 'mt-2 border-2 border-black w-full px-6 py-3 mb-2 rounded-lg font-medium'}), 
             'preferredSize' : forms.Select(attrs={'class': 'mt-2 border-2 border-black w-full px-6 py-3 mb-2 rounded-lg font-medium'}),             
             'preferredColor': forms.Select(attrs={'class': 'mt-2 border-2 border-black w-full px-6 py-3 mb-2 rounded-lg font-medium'}), 
-            'preferredSpayedorNeutered' : forms.CheckboxInput(attrs={'class' : 'ml-4'}),
             'preferredHealthCondition' : forms.Select(attrs={'class': 'mt-2 border-2 border-black w-full px-6 py-3 mb-2 rounded-lg font-medium'}), 
             'preferredPersonality': forms.Select(attrs={'class': 'mt-2 border-2 border-black w-full px-6 py-3 mb-2 rounded-lg font-medium'}), 
+            'preferredSpayedorNeutered' : forms.CheckboxInput(attrs={'class' : 'ml-4'}),
         }
 
         labels = {
@@ -145,7 +145,7 @@ class PreferenceForm(forms.ModelForm):
             'preferredGender': 'Preferred Gender of the Pet:',
             'preferredSize': 'Preferred Size of the Pet:',
             'preferredColor': 'Preferred Color of the Pet:',
-            'preferredSpayedorNeutered': 'Preference for a Spayed or Neutered Pet:',
+            'preferredSpayedorNeutered': 'Preference for a Spayed or Neutered Pet (check if yes):',
             'preferredHealthCondition': 'Preferred Health Condition of the Pet:',
             'preferredPersonality': 'Preferred Pet Personality:'
         }

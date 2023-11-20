@@ -29,7 +29,8 @@
         <!-- USER FORM -->
         <div class="col-span-2">
             <h1 class="font-bold mt-14 text-4xl" style="font-family: 'Imprima', sans-serif;"> Personal Information </h1>
-            <p class="border-b-2 mb-6 mt-6 border-black"></p>
+            <p>Fill up the form below with your personal information and desired account credentials.</p>
+            <p class="border-b-2 mb-6 mt-3 border-black"></p>
         </div>
         <div class="col-span-2">
             {{form.email.label_tag}}
@@ -107,17 +108,45 @@
         <!-- USER PREFERENCE FORM -->
         <div class="col-span-2">
             <h1 class="font-bold mt-14 text-4xl" style="font-family: 'Imprima', sans-serif;"> Pet Preference </h1>
-            <p class="border-b-2 mb-6 mt-6 border-black"></p>
+            <p>Fill up the form below with your preference in pet.</p>
+            <p class="border-b-2 mb-6 mt-3 border-black"></p>
         </div>
-        {{preference_form.as_p}}
-
-
-        <!-- PET PERSONALITY FORMSET -->
-        <div class="col-span-2 mt-10 mb-4">
-            <p class="font-bold text-xl">Choose 3 preferred pet personalities.</p>
+        <div class="">
+            {{preference_form.preferredAnimalType.label_tag}}
+            {{preference_form.preferredAnimalType}}
         </div>
-        {{personality_preference_formset.as_p}}
-        
+        <div class="">
+            {{preference_form.preferredBreed.label_tag}}
+            {{preference_form.preferredBreed}}
+        </div>
+        <div class="">
+            {{preference_form.preferredAge.label_tag}}
+            {{preference_form.preferredAge}}
+        </div>
+        <div class="">
+            {{preference_form.preferredGender.label_tag}}
+            {{preference_form.preferredGender}}
+        </div>
+        <div class="">
+            {{preference_form.preferredSize.label_tag}}
+            {{preference_form.preferredSize}}
+        </div>
+        <div class="">
+            {{preference_form.preferredColor.label_tag}}
+            {{preference_form.preferredColor}}
+        </div>
+        <div class="">
+            {{preference_form.preferredHealthCondition.label_tag}}
+            {{preference_form.preferredHealthCondition}}
+        </div>
+        <div class="">
+            {{preference_form.preferredPersonality.label_tag}}
+            {{preference_form.preferredPersonality}}
+        </div>
+        <div class="">
+            {{preference_form.preferredSpayedorNeutered.label_tag}}
+            {{preference_form.preferredSpayedorNeutered}}
+        </div>
         <!-- BUTTON --> 
         <div></div>
         <div class="col-span-2 flex justify-end">
@@ -125,7 +154,6 @@
             Submit
         </button>
         </div>
-        
     </form>
 </div>
 

@@ -8,6 +8,7 @@ from .decorators import unauthenticated_user
 from django.contrib import messages
 from django.urls import reverse
 import os
+from pets.models import Application
 from django.conf import settings
 
 # Create your views here.
@@ -42,7 +43,10 @@ def user_login(request):
         form = LoginForm(request, request.POST)
         if form.is_valid():
             auth_login(request, form.get_user())
-            return redirect('index')
+            if request.user.is_staff:
+                return redirect('staff_dashboard')
+            else:
+                return redirect('index')
     else:
         form = LoginForm()
 
@@ -58,37 +62,61 @@ def sent_email(request):
 @login_required
 def profile(request, slug, id):
     user = get_object_or_404(Users, slug=slug)
-    adopters = Users.objects.get(pk=id)
-    preference = Preference.objects.get(adopter=adopters)
+
+    try:
+        adopter = Users.objects.get(pk=id)
+        preference = Preference.objects.get(adopter=adopter)
+        applications = Application.objects.filter(user=adopter)
+    except Users.DoesNotExist:
+        adopter = None
+        preference = None
+        applications = None
+    except Preference.DoesNotExist:
+        preference = None
+        applications = None
 
     context = {
         'user': user,
+        'adopter': adopter,
         'preference': preference,
+        'applications': applications,
     }
 
     return render(request, 'users/profile.html', context)
 
 @login_required
-def update_profile(request, slug):
-    user = get_object_or_404(Users, slug=slug)
+def update_profile(request, slug, id):
+    user = get_object_or_404(Users, slug=slug, id=id)
     
     if request.method == 'POST':
         update_user_form = UserUpdateForm(request.POST, instance=request.user)
         update_profile_form = ProfilePictureUpdateForm(request.POST, request.FILES, instance=request.user.profile)
         
         if update_user_form.is_valid() and update_profile_form.is_valid():
-            # Delete the previous profile picture if it exists
+            # Get the previous profile picture
             previous_picture = user.profile.image
-            if previous_picture:
+            # Check if the previous picture is the default one
+            is_default_picture = str(previous_picture) == 'default.png'
+
+            # Check if a new image has been provided
+            new_profile_picture = update_profile_form.cleaned_data.get('image')
+
+            # If a new picture is provided and the previous one is not the default
+            if new_profile_picture and not is_default_picture:
+                # Delete the previous profile picture if it is not the default one
                 full_path = os.path.join(settings.MEDIA_ROOT, str(previous_picture))
                 if os.path.exists(full_path):
                     os.remove(full_path)
 
+            # Save the updated user form
             update_user_form.save()
-            update_profile_form.save()
-            
+            # Save the updated profile form
+            profile_instance = update_profile_form.save(commit=False)
+            profile_instance.user = request.user
+            profile_instance.save()
+
             messages.success(request, 'Profile updated successfully!')
-            return redirect('profile', slug=user.slug)  # Assuming 'profile' is the URL name for the user's profile page
+            return redirect(user.get_absolute_url())
         
     else:
         update_user_form = UserUpdateForm(instance=request.user)
@@ -101,3 +129,4 @@ def update_profile(request, slug):
     }
 
     return render(request, 'users/update_profile.html', context)
+

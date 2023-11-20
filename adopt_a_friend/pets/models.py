@@ -77,6 +77,13 @@ HEALTH_CONDITIONS = (
     ('Senior Care', 'Senior Care'),
 )
 
+APPLICATION_STATUS = (
+    ('Pending', 'Pending'),
+    ('Accepted', 'Accepted'),
+    ('On Hold', 'On Hold'),
+    ('Rejected', 'Rejected'),
+)
+
 def generate_pet_key():
     last_record = Pet.objects.order_by('-petId').first()
     if last_record is not None:
@@ -159,11 +166,15 @@ class Application(models.Model):
     adopteeLastName = models.CharField(max_length=50, null=False, blank=False)
     adopteeHomeAddress = models.CharField(max_length=300, null=False, blank=False)
     adopteeContactNum = models.CharField(max_length=15, null=False, blank=False)
-    status = models.CharField(max_length=300, null=False, blank=False)
+    picture = models.ImageField(blank=False, null=False, upload_to='static/application_pics', default="static/default.png")
+    status = models.CharField(max_length=50, choices=APPLICATION_STATUS ,null=False, blank=False, default="Pending")
     staffComment = models.TextField(max_length=300, null=False, blank=True, default='')
-    interviewDate = models.DateField(null=True)
-    inPersonVisitDate = models.DateField(null=True)
-    
+    interviewDate = models.DateField(null=True, blank=True)
+    interviewTime = models.CharField(max_length=20, null=False, blank=False, default='')
+    inPersonVisitDate = models.DateField(null=True, blank=True)
+    inPersonVisitTime = models.CharField(max_length=20, null=False, blank=False, default='')
+    created_at = models.DateTimeField(default=timezone.now)
+
 class HousePicture(models.Model):
     applicationId = models.ForeignKey(Application, null=False, on_delete=models.CASCADE)
     housePicture = models.ImageField(blank=False, null=False, upload_to='static/application_pics')
@@ -175,4 +186,3 @@ class IdPicture(models.Model):
 class CondoAgreement(models.Model):
     applicationId = models.ForeignKey(Application, null=False, on_delete=models.CASCADE)
     condoAgreement = models.FileField(upload_to='static/application_files', null=True, blank=True)
-

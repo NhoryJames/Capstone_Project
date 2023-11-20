@@ -20,6 +20,12 @@ COLOR_CHOICES = (
     ('Any', 'Any'),
 )
 
+BREED = (
+    ('Puspin', 'Puspin'),
+    ('Aspin', 'Aspin'),
+    ('Any', 'Any'),
+)
+
 PERSONALITY_CHOICES = (
     ('Playful', 'Playful'),
     ('Cuddly', 'Cuddly'),
@@ -193,6 +199,7 @@ class Preference(models.Model):
     preferenceId = models.CharField(max_length=10, default=generate_preference_key, primary_key=True, unique=True)
     adopter = models.ForeignKey(Users, null=False, blank=False, on_delete=models.CASCADE)
     preferredAnimalType = models.CharField(max_length=20, choices=ANIMAL_TYPES_CHOICES, null=False, blank=False, default="")
+    preferredBreed = models.CharField(max_length=20, choices=BREED, null=False, blank=False, default="Any")
     preferredAge = models.CharField(max_length=20, choices=PET_AGE_CHOICES, null=False, blank=False, default="")
     preferredGender = models.CharField(max_length=20, choices=GENDER_CHOICES, null=False, blank=False, default="")
     preferredSize = models.CharField(max_length=20, choices=PET_SIZE_CHOICES, null=False, blank=False, default="")

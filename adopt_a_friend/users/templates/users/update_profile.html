@@ -31,16 +31,16 @@
               </svg>
         </button>
      </a>
-    <div class="mt-12 mx-60 px-20 py-8 rounded-2xl mb-12" style="background-color: #f89651;">
+    <div class="mt-2 mx-60 px-20 py-8 rounded-2xl mb-12" style="background-color: #f89651;">
         <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             <fieldset style="font-family: Imprima;">
-                <p class="text-3xl pb-4 font-bold text-shadows text-white">Update Profile Picture</p>
-                {{update_profile.as_p}}
+                <p class="text-3xl pb-4 font-bold text-white">Update Profile Picture</p>
+                {{update_profile_form.as_p}}
                 <br><br>
     
-                <p class="text-3xl pb-4 font-bold text-shadows text-white">Update Profile Information</p>
-                {{update_user.as_p}}
+                <p class="text-3xl pb-4 font-bold text-white">Update Profile Information</p>
+                {{update_user_form.as_p}}
             </fieldset>
             <div class="flex justify-end">
                 <button type="submit" class="font-semibold text-white px-9 py-2 rounded-md bg-amber-900 hover:bg-yellow-800">

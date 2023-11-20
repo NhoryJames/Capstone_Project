@@ -5,6 +5,8 @@ from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 from .recommendation import recommend_pets
 from users.models import Preference
+from django.utils import timezone
+
 
 # Create your views here.
 
@@ -43,7 +45,9 @@ def pet_page(request):
         pets = pets.filter(
             Q(petName__icontains=query) |
             Q(animalType__icontains=query) |
-            Q(breed__icontains=query)
+            Q(breed__icontains=query) |
+            Q(petAge__icontains=query) |
+            Q(petGender__icontains=query) 
         )
 
     return render(request, 'pets/adoptme.html', {'pets': pets, 'recommended_pets': recommended_pets})
@@ -52,6 +56,18 @@ def pet_page(request):
 def application(request, slug):
     pet = get_object_or_404(Pet, slug=slug)
     user = request.user
+
+    existing_application = Application.objects.filter(pet=pet, user=user).first()
+    if existing_application:
+        # You can redirect to a page indicating that the user has already applied for this pet
+        return redirect('application_duplication')
+    
+    week_ago = timezone.now() - timezone.timedelta(weeks=1)
+    user_applications_last_week = Application.objects.filter(user=user, created_at__gte=week_ago).count()
+
+    if user_applications_last_week >= 2:
+        # You can redirect to a page indicating that the user has reached the limit for the week
+        return redirect('submission_exceeded')
 
     if request.method == 'POST':
         application_form = ApplicationForm(request.POST)
@@ -110,4 +126,12 @@ def application(request, slug):
 
 @login_required
 def submitted(request):
-    return render(request, 'pets/application_submitted.html')
+    return render(request, 'pets/application_submitted_successfuly.html')
+
+@login_required
+def submission_exceeded(request):
+    return render(request, 'pets/application_limit_exceeded.html')
+
+@login_required
+def application_duplication(request):
+    return render(request, 'pets/application_already_submitted.html')
