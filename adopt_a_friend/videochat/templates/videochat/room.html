@@ -9,10 +9,10 @@
     <link rel="stylesheet" href="{% static 'styles/main.css' %}">
     {% tailwind_css %}
 </head>
-<body>
+<body style="background-image: url('/static/image/staffbg.png'); background-size: cover;">
     <main>
         <section id="room-name-wrapper" class="pt-5">
-            <p> Room Name: <span id="room-name"></span> </p>
+            <p class="font-bold"><span id="room-name"></span></p>
         </section>
         
         <section class="pt-8" id="video-streams"></section>

@@ -11,13 +11,16 @@ class ApplicationForm(forms.ModelForm):
             'adopteeLastName',
             'adopteeHomeAddress',
             'adopteeContactNum',
+            'preferredModeOfInterview',
                   )
         
         widgets = {
             'adopteeFirstName' : forms.TextInput(attrs={'class': 'mt-2 border-2 border-black w-full px-6 py-3 mb-2 rounded-lg font-medium'}),
             'adopteeLastName' : forms.TextInput(attrs={'class': 'mt-2 border-2 border-black w-full px-6 py-3 mb-2 rounded-lg font-medium'}),
             'adopteeHomeAddress' : forms.TextInput(attrs={'class': 'mt-2 border-2 border-black w-full px-6 py-3 mb-2 rounded-lg font-medium'}),    
-            'adopteeContactNum' : forms.TextInput(attrs={'class': 'mt-2 border-2 border-black w-full px-6 py-3 mb-2 rounded-lg font-medium'}), 
+            'adopteeContactNum' : forms.TextInput(attrs={'class': 'mt-2 border-2 border-black w-full px-6 py-3 mb-2 rounded-lg font-medium'}),
+            'preferredModeOfInterview' : forms.Select(attrs={'class': 'mt-2 border-2 border-black w-full px-6 py-3 mb-2 rounded-lg font-medium'}),
+
         }
 
         labels = {
@@ -25,6 +28,7 @@ class ApplicationForm(forms.ModelForm):
             'adopteeLastName' : 'Last Name:',
             'adopteeHomeAddress' : 'Home Address',
             'adopteeContactNum' : 'Contact Number',
+            'preferredModeOfInterview' : 'Preferred Mode of Interview:',
         }
 
 class HousePictureForm(forms.ModelForm):

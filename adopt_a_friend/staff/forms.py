@@ -106,6 +106,7 @@ class CampaignForm(forms.ModelForm):
             'campaignName' : forms.TextInput(attrs={'class': 'mt-2 border-2 border-black w-full px-6 py-3 mb-2 rounded-lg font-medium'}), 
             'campaignDescription' : forms.Textarea(attrs={'class': 'mt-2 border-2 border-black w-full px-6 py-3 mb-2 rounded-lg font-medium'}), 
             'campaignGoal' : forms.NumberInput(attrs={'step': '0.01', 'min': '0', 'class': 'mt-2 border-2 border-black w-full px-6 py-3 mb-2 rounded-lg font-medium'}),
+            'campaignPurpose' : forms.TextInput(attrs={'class': 'mt-2 border-2 border-black w-full px-6 py-3 mb-2 rounded-lg font-medium'}), 
         }
 
         labels = {
@@ -113,8 +114,9 @@ class CampaignForm(forms.ModelForm):
             'campaignDescription' : 'Campaign Description:',
             'campaignGoal' : 'Campaign Goal:',
             'campaignImage': 'Campaign Image:',
+            'campaignPurpose' : 'Purpose of the Campaign', 
         }
-    
+
      # PUT VALIDATIONS HERE
 
 # ------------------------------ REVIEW APPLICATION FORMS ----------------------------- #
@@ -129,6 +131,7 @@ class ReviewApplicationForm(forms.ModelForm):
             'interviewTime',
             'inPersonVisitDate',
             'inPersonVisitTime',
+            'modeOfInterview',
         ]
 
         widgets = {
@@ -136,8 +139,9 @@ class ReviewApplicationForm(forms.ModelForm):
             'inPersonVisitDate': forms.DateInput(attrs={'type': 'date', 'class': 'mt-2 border-2 border-black w-full px-6 py-3 mb-2 rounded-lg font-medium'}),
             'status' : forms.Select(attrs={'class': 'mt-2 border-2 border-black w-full px-6 py-3 mb-2 rounded-lg font-medium'}), 
             'staffComment' : forms.Textarea(attrs={'class': 'mt-2 border-2 border-black w-full px-6 py-3 mb-2 rounded-lg font-medium'}), 
-            'interviewTime' : forms.TextInput(attrs={'class': 'mt-2 border-2 border-black w-full px-6 py-3 mb-2 rounded-lg font-medium'}), 
-            'inPersonVisitTime' : forms.TextInput(attrs={'class': 'mt-2 border-2 border-black w-full px-6 py-3 mb-2 rounded-lg font-medium'}), 
+            'interviewTime' : forms.TimeInput(attrs={'type': 'time', 'class': 'mt-2 border-2 border-black w-full px-6 py-3 mb-2 rounded-lg font-medium'}), 
+            'inPersonVisitTime' : forms.TimeInput(attrs={'type': 'time', 'class': 'mt-2 border-2 border-black w-full px-6 py-3 mb-2 rounded-lg font-medium'}), 
+            'modeOfInterview' : forms.Select(attrs={'class': 'mt-2 border-2 border-black w-full px-6 py-3 mb-2 rounded-lg font-medium'}), 
         }
 
         labels = {
@@ -147,6 +151,7 @@ class ReviewApplicationForm(forms.ModelForm):
             'staffComment' : 'Staff Comment',
             'interviewTime' : 'Time of Online Interview',
             'inPersonVisitTime' : 'Time of In Person Visit',
+            'modeOfInterview' : 'Interview Mode',
         }
 
 

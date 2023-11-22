@@ -26,7 +26,11 @@ import io
 
 @staff_required
 def staff_dashboard(request):
-    return render(request, 'staff/staff_dashboard.html')
+    # Retrieve completed applications
+    completed_applications = Application.objects.filter(status='Completed')
+
+    # Pass the completed applications to the template
+    return render(request, 'staff/staff_dashboard.html', {'completed_applications': completed_applications})
 
 @staff_required
 def staff_application_dashboard(request):

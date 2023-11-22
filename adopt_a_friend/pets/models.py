@@ -79,11 +79,18 @@ HEALTH_CONDITIONS = (
 
 APPLICATION_STATUS = (
     ('Pending', 'Pending'),
+    ('Interviewing', 'Interviewing'),
     ('Accepted', 'Accepted'),
     ('On Hold', 'On Hold'),
     ('Rejected', 'Rejected'),
+    ('Evaluating', 'Evaluating'),
+    ('Completed', 'Completed'),
 )
 
+INTERVIEW_MODE = (
+    ('Online', 'Online'),
+    ('On-site', 'On-site'),
+)
 def generate_pet_key():
     last_record = Pet.objects.order_by('-petId').first()
     if last_record is not None:
@@ -168,11 +175,13 @@ class Application(models.Model):
     adopteeContactNum = models.CharField(max_length=15, null=False, blank=False)
     picture = models.ImageField(blank=False, null=False, upload_to='static/application_pics', default="static/default.png")
     status = models.CharField(max_length=50, choices=APPLICATION_STATUS ,null=False, blank=False, default="Pending")
+    preferredModeOfInterview =  models.CharField(max_length=50, choices=INTERVIEW_MODE ,null=False, blank=False, default="")
+    modeOfInterview =  models.CharField(max_length=50, choices=INTERVIEW_MODE ,null=False, blank=False, default="")
     staffComment = models.TextField(max_length=300, null=False, blank=True, default='')
     interviewDate = models.DateField(null=True, blank=True)
-    interviewTime = models.CharField(max_length=20, null=False, blank=False, default='')
+    interviewTime = models.TimeField(null=True, default=None, blank=True)
     inPersonVisitDate = models.DateField(null=True, blank=True)
-    inPersonVisitTime = models.CharField(max_length=20, null=False, blank=False, default='')
+    inPersonVisitTime = models.TimeField(null=True, default=None, blank=True)
     created_at = models.DateTimeField(default=timezone.now)
 
 class HousePicture(models.Model):

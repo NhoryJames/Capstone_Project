@@ -35,9 +35,9 @@ INSTALLED_APPS = [
     'videochat',
     'pets',
     'staff',
-    'recommendation',
     'donation',
     'django_social_share',
+    'chat'
 ]
 
 MIDDLEWARE = [

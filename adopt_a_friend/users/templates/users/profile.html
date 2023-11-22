@@ -161,7 +161,7 @@
         </div>
 
         <div class="col-span-1  font-bold">
-            <h1 class="text-lg">Posts</h1>
+            <h1 class="text-lg">Messages</h1>
             <p class="my-3 border-t-2 border-amber-900"></p>
         </div>
         
@@ -177,25 +177,43 @@
                         <h1 class="text-white font-bold text-center">Pending</h1>
                     </div>
                 </div>
-                {% elif application.status == "On Hold" %}
+            {% elif application.status == "On Hold" %}
                 <div class="w-32 my-2.5 mx-2.5">
                     <div class="bg-blue-500 rounded-md text-gray-600 py-2 px-5">
                         <h1 class="text-white font-bold text-center">On Hold</h1>
                     </div>
                 </div>
-                {% elif application.status == "Accepted" %}
+            {% elif application.status == "Accepted" %}
                 <div class="w-32 my-2.5 mx-2.5">
                     <div class="bg-green-700 rounded-md text-gray-600 py-2 px-5">
                         <h1 class="text-white font-bold text-center">Accepted</h1>
                     </div>
                 </div>
-                {% elif application.status == "Rejected" %}
+            {% elif application.status == "Rejected" %}
                 <div class="w-32 my-2.5 mx-2.5">
                     <div class="bg-red-500 rounded-md text-gray-600 py-2 px-5">
                         <h1 class="text-white font-bold text-center">Rejected</h1>
                     </div>
                 </div>
-                {% endif %}
+            {% elif application.status == "Interviewing" %}
+                <div class="w-32 my-2.5 mx-2.5">
+                    <div class="bg-purple-500 rounded-md text-gray-600 py-2 px-5">
+                        <h1 class="text-white font-bold text-center">Interviewing</h1>
+                    </div>
+                </div>
+            {% elif application.status == "Evaluating" %}
+                <div class="w-32 my-2.5 mx-2.5">
+                    <div class="bg-indigo-500 rounded-md text-gray-600 py-2 px-5">
+                        <h1 class="text-white font-bold text-center">Evaluating</h1>
+                    </div>
+                </div>
+            {% elif application.status == "Completed" %}
+                <div class="w-32 my-2.5 mx-2.5">
+                    <div class="bg-gray-500 rounded-md text-gray-600 py-2 px-5">
+                        <h1 class="text-white font-bold text-center">Completed</h1>
+                    </div>
+                </div>
+            {% endif %}
             </div>
             <div class="my-8 mx-8 text-white grid grid-cols-2 col-span-2 text-lg">
                 <div class="">
@@ -212,15 +230,43 @@
                 </div>
                 <div class="flex justify-end">
                     <div class="pt-10">
-                        <div class="py-2 px-3 bg-white rounded-md text-gray-600 hover:scale-110 duration-200 hover:cursor-pointer">
-                            <a href="{% url 'generate_application_report' application.applicationId %}">
-                                <div class="flex gap-2">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 stroke-green-700" viewBox="0 0 24 24">
-                                        <path fill="currentColor" d="m12 16l-5-5l1.4-1.45l2.6 2.6V4h2v8.15l2.6-2.6L17 11l-5 5Zm-8 4v-5h2v3h12v-3h2v5H4Z"/>
-                                    </svg>
-                                    <button class="text-sm text-green-700">Download</button> 
-                                </div>
-                            </a>
+                        <div class="flex gap-2">
+                            <div class="py-2 px-3 bg-white rounded-md text-gray-600 hover:scale-110 duration-200 hover:cursor-pointer">
+                                <a href="{% url 'generate_application_report' application.applicationId %}">
+                                    <div class="flex gap-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6" viewBox="0 0 24 24">
+                                            <path fill="currentColor" d="m12 16l-5-5l1.4-1.45l2.6 2.6V4h2v8.15l2.6-2.6L17 11l-5 5Zm-8 4v-5h2v3h12v-3h2v5H4Z"/>
+                                        </svg>
+                                        <button class="text-sm text-green-700">Download</button> 
+                                    </div>
+                                </a>
+                            </div>
+                
+                            {% if application.status == "Interviewing" and application.modeOfInterview == "Online" %}
+                            <div class="py-2 px-3 bg-white rounded-md text-gray-600 hover:scale-110 duration-200 hover:cursor-pointer">
+                                <a href="{% url 'lobby' applicationId=application.applicationId %}">
+                                    <div class="flex gap-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6" viewBox="0 0 256 256">
+                                            <path fill="currentColor" d="M212 82a26 26 0 1 0 26 26a26 26 0 0 0-26-26Zm0 40a14 14 0 1 1 14-14a14 14 0 0 1-14 14ZM70 108a26 26 0 1 0-26 26a26 26 0 0 0 26-26Zm-26 14a14 14 0 1 1 14-14a14 14 0 0 1-14 14Zm48-36a26 26 0 1 0-26-26a26 26 0 0 0 26 26Zm0-40a14 14 0 1 1-14 14a14 14 0 0 1 14-14Zm72 40a26 26 0 1 0-26-26a26 26 0 0 0 26 26Zm0-40a14 14 0 1 1-14 14a14 14 0 0 1 14-14Zm22.15 104.61a37.32 37.32 0 0 1-17.82-22.33a42 42 0 0 0-80.66 0a37.26 37.26 0 0 1-17.77 22.3A38 38 0 0 0 88 222a37.58 37.58 0 0 0 14.76-3a66.14 66.14 0 0 1 50.41 0a37.66 37.66 0 0 0 14.83 3a38 38 0 0 0 18.15-71.39ZM168 210a25.93 25.93 0 0 1-10.21-2.08a78.15 78.15 0 0 0-59.65 0a26 26 0 0 1-22.46-46.82a49.28 49.28 0 0 0 23.51-29.48a30 30 0 0 1 57.62 0a49.27 49.27 0 0 0 23.57 29.5A26 26 0 0 1 168 210Z"/>
+                                        </svg>                                            
+                                        <button class="text-sm text-green-700">Paw Link</button> 
+                                    </div>
+                                </a>
+                            </div>
+                            {% endif %}
+
+                            {% if application.status == "Completed"%}
+                            <div class="py-2 px-3 bg-white rounded-md text-gray-600 hover:scale-110 duration-200 hover:cursor-pointer">
+                                <a href="{% url 'chat' applicationId=application.applicationId %}">
+                                    <div class="flex gap-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6" viewBox="0 0 256 256">
+                                            <path fill="currentColor" d="M212 82a26 26 0 1 0 26 26a26 26 0 0 0-26-26Zm0 40a14 14 0 1 1 14-14a14 14 0 0 1-14 14ZM70 108a26 26 0 1 0-26 26a26 26 0 0 0 26-26Zm-26 14a14 14 0 1 1 14-14a14 14 0 0 1-14 14Zm48-36a26 26 0 1 0-26-26a26 26 0 0 0 26 26Zm0-40a14 14 0 1 1-14 14a14 14 0 0 1 14-14Zm72 40a26 26 0 1 0-26-26a26 26 0 0 0 26 26Zm0-40a14 14 0 1 1-14 14a14 14 0 0 1 14-14Zm22.15 104.61a37.32 37.32 0 0 1-17.82-22.33a42 42 0 0 0-80.66 0a37.26 37.26 0 0 1-17.77 22.3A38 38 0 0 0 88 222a37.58 37.58 0 0 0 14.76-3a66.14 66.14 0 0 1 50.41 0a37.66 37.66 0 0 0 14.83 3a38 38 0 0 0 18.15-71.39ZM168 210a25.93 25.93 0 0 1-10.21-2.08a78.15 78.15 0 0 0-59.65 0a26 26 0 0 1-22.46-46.82a49.28 49.28 0 0 0 23.51-29.48a30 30 0 0 1 57.62 0a49.27 49.27 0 0 0 23.57 29.5A26 26 0 0 1 168 210Z"/>
+                                        </svg>                                            
+                                        <button class="text-sm text-green-700">Contact Staff</button> 
+                                    </div>
+                                </a>
+                            </div>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
@@ -233,4 +279,3 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.1/flowbite.min.js"></script>
 </html>
-
